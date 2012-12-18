@@ -1,0 +1,2866 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BoolwareNET</name>
+    </assembly>
+    <members>
+        <member name="T:Boolware.ColumnInfoEx">
+            <summary>
+            Holds meta-data with extra index settings in flag2 information about one column.
+            See class ColumnFlagValues for flag and flag2 values
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.name">
+            <summary>Column name</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.flags">
+            <summary>Boolware indexing flags. Values are:
+            <ul>
+            <li>0x1 - String indexing</li>
+            <li>0x2 - Word indexing</li>
+            <li>0x4 - Phonetic words</li>
+            <li>0x8 - Proximity search</li>
+            <li>0x10 - Similarity search</li>
+            <li>0x20 - Left truncated search</li>
+            <li>0x40 - Proximity within line</li>
+            <li>0x80 - Normalize string (compress)</li>
+            <li>0x100 - Word permutations</li>
+            <li>0x200 - Stemmed words</li>
+            <li>0x400 - Grouped keys (fast interval)</li>
+            <li>0x800 - Rankable column</li>
+            <li>0x1000 - Categorization field</li>
+            <li>0x10000 - Index with field ID</li>
+            <li>0x20000 - Table global free text index</li>
+            <li>0x40000 - Alias field</li>
+            <li>0x100000 - Field contains markup elements</li>
+            <li>0x200000 - Field uses stop words</li>
+            <li>0x1000000 - Foreign key</li>
+            <li>0x2000000 - XML content column</li>
+            <li>0x4000000 - XML subfield (part of XML content column)</li>
+            <li>0x8000000 - Computed (virtual) column</li>
+            </ul></summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.flags2">
+            <summary>Boolware indexing flags2. Values are:
+            <ul>
+            <li>0x00000001 - Field is Geoposition; Lat or Long, WGS84 format</li>
+            <li>0x00000002 - Field is Meter format like RT90</li>
+            <li>0x00000004 - Field contains both Long/Lat in same field</li>
+            <li>0x00000010 - Field is exact Word</li>
+            <li>0x00000020 - Field is exact String</li>
+            </ul></summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.size">
+            <summary>Maximum size of this column</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.type">
+            <summary>ODBC coded data type</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.primaryKeySequence">
+            <summary>If part of primary key, sequence number</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfoEx.decimalCount">
+            <summary>Number of decimals</summary>
+        </member>
+        <member name="M:Boolware.ColumnInfoEx.Copy(Boolware.ColumnInfoEx)">
+            <summary>
+            Help routine to copy content of a ColumnInfoEx class
+            </summary>
+            <param name="col"></param>
+        </member>
+        <member name="M:Boolware.ColumnInfoEx.Copy(Boolware.ColumnInfo)">
+            <summary>
+            Help routine to copy content of a ColumnInfo class
+            </summary>
+            <param name="col"></param>
+        </member>
+        <member name="T:Boolware.TupleCache">
+            <summary>
+            Tuple cache; manages the most frequently requested tuples.
+            </summary>
+        </member>
+        <member name="M:Boolware.TupleCache.#ctor">
+            <summary>
+            Creates this instance.
+            </summary>
+        </member>
+        <member name="M:Boolware.TupleCache.MoveFirst(System.Int32)">
+            <summary>
+            Places a tuple first in the array.
+            </summary>
+            <param name="index">zero-based index of tuple to move first.</param>
+        </member>
+        <member name="M:Boolware.TupleCache.Lookup(System.Int32)">
+            <summary>
+            Looks up a tuple using hit number.
+            </summary>
+            <param name="hitNo">Find a tuple in the cache.</param>
+            <returns>Tuple if found; otherwise null.</returns>
+        </member>
+        <member name="M:Boolware.TupleCache.Add(Boolware.Tuple)">
+            <summary>
+            Adds a Tuple to this cache.
+            </summary>
+            <param name="tuple">The tuple to add.</param>
+            
+        </member>
+        <member name="M:Boolware.TupleCache.Clear">
+            <summary>
+            Clears this cache, making all Tuples in it invalid.
+            </summary>
+        </member>
+        <member name="M:Boolware.TupleCache.GetCount">
+            <summary>
+            Returns number of Tuples in this cache.
+            </summary>
+            <returns>number of tuples in this cache.</returns>
+        </member>
+        <member name="M:Boolware.TupleCache.IndexOfColumn(System.String)">
+            <summary>
+            Finds the index for a named column.
+            </summary>
+            <param name="column">the name of the column.</param>
+            <returns>index >= 0 if found; otherwise -1.</returns>
+        </member>
+        <member name="M:Boolware.TupleCache.Fetch(System.String,System.String,System.Int32,System.Int32,System.Int32,Boolware.Tuple[])">
+            <summary>
+            Fetches tuples from this cache.
+            </summary>
+            <param name="table">the name of the table.</param>
+            <param name="columns">the requested columns, comma separated string.</param>
+            <param name="hitNo">the first requested hit number (zero-based)</param>
+            <param name="count">the number of consecutive tuples to fetch</param>
+            <param name="maxChars">maximum length needed from any column, zero means "all".</param>
+            <param name="tuples">the Tuple array where tuples are returned.</param>
+            <returns>true if all tuples could be fetched from the cache.</returns>
+        </member>
+        <member name="M:Boolware.TupleCache.SetColumns(System.String,System.String)">
+            <summary>
+            Sets the columns contained in this cache.
+            </summary>
+            <param name="table">the database table name.</param>
+            <param name="columns">comma separated string of column names.</param>
+        </member>
+        <member name="M:Boolware.TupleCache.Sort(System.Int32)">
+            <summary>
+            Sorts the tuples in the cache according to the "order" expression.
+            </summary>
+            <param name="colNo">an SQL "order by" expression.</param>
+        </member>
+        <member name="T:Boolware.RankMode">
+            <summary>
+            Supported ranking methods.
+            </summary>
+        </member>
+        <member name="T:Boolware.Client">
+            <summary>
+            This is the Boolware .NET client class. It exposes the Boolware API for a managed .NET application.
+            Create an instance of this class, connect it with a Boolware server and then use the methods of this class
+            to query the database, fetch tuples etc.
+            </summary> 
+            
+        </member>
+        <member name="F:Boolware.Client.connectTimeout">
+            <summary>
+            The member connectTimeout must be set before a call to any Connect is done to have 
+            affect. Set connectTimout to maximum amount of time in milli seconds. 
+            0 indicate use system connect timeout.
+            </summary>
+        </member>
+        <member name="M:Boolware.Client.#ctor">
+            <summary>
+            Client constructor.
+            </summary>
+            
+        </member>
+        <member name="M:Boolware.Client.#ctor(System.Boolean)">
+            <summary>
+            Overloaded constuctot to be able change the logout code on Dispose.
+            Default on Dispose it Disconnect(false) but can be changed by initiate
+            the Client class with Client(true)
+            </summary>
+            <param name="logoutOnDispose">will use the logoutOnDispose in call to method Disconnet on Dispose</param>
+        </member>
+        <member name="M:Boolware.Client.Finalize">
+            <summary>
+            Destructor call the Dispose method
+            </summary>
+        </member>
+        <member name="M:Boolware.Client.Dispose">
+            <summary>
+            Public dispose method
+            </summary>
+        </member>
+        <member name="M:Boolware.Client.Dispose(System.Boolean)">
+            <summary>
+            The actual dispose method. If it is called when a connection is still alive
+            it will call this.Disconnect with true to logout this session and close the connection.
+            </summary>
+            <param name="dispose"></param>
+        </member>
+        <member name="M:Boolware.Client.binary(System.Int32)">
+            <summary>
+            Indicates if a datatype is binary or not.
+            </summary>
+            <param name="type">is the Boolware (ODBC) data type code.</param>
+            <returns>true if type contains binary data (BLOB).</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.InitRequest(System.Int32)">
+            <summary>
+            Initializes a request packet.
+            </summary>
+            <param name="cmdCode">The Boolware API request code.</param>
+            
+        </member>
+        <member name="M:Boolware.Client.FetchMessage(Boolware.Client.NetPacket,System.Int32)">
+            <summary>
+            Fetches an error message from Boolware.
+            </summary>
+            <param name="p">Net packet stream</param>
+            <param name="messNo">is the error code, for which a message is desired.</param>
+            <returns>Boolware response code</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.SendAndReceive">
+            <summary>
+            Transmits and receives one packet between this client and Boolware.
+            </summary>
+            <returns>Boolware response code</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.ReadRowset(System.String,System.String,System.Int32)">
+            <summary>
+            Reads a set of tuples (a row set) from Boolware.
+            </summary>
+            <param name="table">requested table name</param>
+            <param name="columns">the names of the columns that are read.</param>
+            <param name="hitNo">zero based hit number of the first tuple.</param>
+            <returns>array of read Tuple:s.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetTableInfoAll(System.Boolean)">
+             <summary>
+             Requests info about all tables from the server. This is only done if
+             server is known to be 2.3 or higher. Member field 'fTablesInfo' will be
+             updated.
+             </summary>
+            
+             <returns>always zero.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetColumnInfoAll(System.String)">
+            <summary>
+            Requests info about all columns in a specific table from the server. This is only done if server is known to be 2.3 or higher. Members 'fColumnsInfo' and 'fTableName' set.
+            </summary>
+            <param name="table">the name of the table.</param>
+            <returns>zero if successful.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.Connect(System.String,System.String,System.String)">
+             <summary>
+             Connects this client with Boolware server.
+             </summary>
+            
+             <param name="hostName">the name or IP no. of the server to connect with.</param>
+             <param name="user">the session ID to use. If empty, Boolware will create a
+              unique session ID which can be read using getSettings().</param>
+             <param name="password"></param>
+             <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.closeStream">
+            <summary>
+            Private method just to close an opened socket. Is called when a stateless connection
+            was established from the ExecuteXML method 
+            </summary>
+        </member>
+        <member name="M:Boolware.Client.ReconnectIfExists(System.String,System.String,System.String)">
+             <summary>
+             Reconnects an existing client with Boolware server.
+             </summary>
+            
+             <param name="hostName">the name or IP no. of the server to connect with.</param>
+             <param name="user">the session ID to reconnect.</param>
+             <param name="password"></param>
+             <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetConnection(System.String,System.String,System.String,System.Boolean,System.Int32)">
+             <summary>
+             Reconnects an existing client with Boolware server.
+             </summary>
+            
+             <param name="hostName">the name or IP no. of the server to connect with.</param>
+             <param name="user">the session ID to use. If empty, Boolware will create a
+              unique session ID which can be read using getSettings().</param>
+             <param name="password"></param>
+             <param name="mustExists">boolean flag indicate client must exist in Boolware
+             server. If set to false the behaviour is exactly the same as Connect() method</param>
+             <param name="xmlConnect">indicate the command CONNECT_XML, CONNECT_XML_NORESP</param>
+             <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.Disconnect(System.Boolean)">
+            <summary>
+            Disconnects from Boolware server.
+            </summary>
+            
+            <param name="logout">logs out the session if true; otherwise just disconnects.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.Attach(System.String)">
+            <summary>
+            Attaches to a database (makes it current).
+            </summary>summary>
+            <param name="dsn">the Data Source Name of the desired database.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            	 
+        </member>
+        <member name="M:Boolware.Client.Detach">
+            <summary>
+            Detaches from the current database index.
+            </summary>summary>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            	 
+        </member>
+        <member name="M:Boolware.Client.QueryTable(System.String,System.String)">
+            <summary>
+            Searches a database table.
+            </summary>
+            
+            <param name="table">the database table that the query addresses.</param>
+            <param name="cmd">a Boolware QL string.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.Execute(System.String)">
+            <summary>
+            Executes a command string at Boolware.
+            </summary>
+            
+            <param name="cmd">a Boolware input execute command string.</param>
+            <returns>Response object describing command result.</returns>
+            		
+        </member>
+        <member name="M:Boolware.Client.ExecuteXML(System.String)">
+            <summary>
+            Executes an XML request at Boolware and returns its response.
+            </summary>
+            <param name="request">the XML request.</param>
+            <returns>the XML response as string.</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.ExecuteXML(System.String,System.String,System.String)">
+            <summary>
+            Executes an XML request at Boolware and return a status code.
+            It will do a connect to specified server with supplied username and send the supplied
+            XML request to the Boolware server.
+            Note. No XML-response will be provided from this call, use the method FetchTuples to fetch tuples.
+            </summary>
+            <param name="server">the Boolware server host address</param>
+            <param name="username">the user name, session id, of the connecting user</param>
+            <param name="request">the XML request</param>
+            <returns>zero upon success or negative on error or positive on warning</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.ExecuteXMLNoResponse(System.String)">
+            <summary>
+            Executes an XML request at Boolware and return a status code.
+            Note. No XML-response will be provided from this call, use the method FetchTuples to fetch tuples.
+            </summary>
+            <param name="request">the XML request</param>
+            <returns>zero upon success or negative on error or positive on warning</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.ExecuteXML(System.String,System.String,System.Boolean,System.String)">
+            <summary>
+            Executes an XML request at Boolware and return an XML response.
+            It will do a connect to specified server with supplied username and send the supplied
+            XML request to the Boolware server.
+            </summary>
+            <param name="server">the Boolware server host address</param>
+            <param name="username">the user name, session id, of the connecting user</param>
+            <param name="stateless">set to true if the connection should be stateless i.e. the session will be terminated in the Boolware server imediatly after the xml request is done</param>
+            <param name="request">the XML request</param>
+            <returns>the XML response as string</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.ExecuteXMLByteResponse(System.String)">
+            <summary>
+            Executes an XML request at Boolware and returns its response.
+            </summary>
+            <param name="request">the XML request.</param>
+            <returns>the XML response as byte array.</returns>
+            		 
+        </member>
+        <member name="M:Boolware.Client.GetHitCount(System.String)">
+            <summary>
+            Returns number of found records in a table.
+            </summary>
+            <param name="table">the name of the table.</param>
+            <returns>number of found records.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetErrorCode">
+            <summary>
+            Returns the last error code.
+            </summary>
+            <returns>the last error code from Boolware.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetPerfCounters">
+            <summary>
+            Get the performance counters values for the specfied counter type 
+            </summary>
+        </member>
+        <member name="M:Boolware.Client.ReadPerfCounters(Boolware.PerfCounters)">
+            <summary>
+            Get the counters from cionncted server into internal data structure
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Boolware.Client.GetErrorMessage">
+            <summary>
+            Returns the last error message.
+            </summary>
+            <returns>error message text.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetQueryTime">
+            <summary>
+            Returns time taken for last query.
+            </summary>
+            <returns>Time, in milliseconds.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetVersion">
+            <summary>
+            Returns the server version. (2.7.0.35) plus .NET client version
+            </summary>
+            <returns>a string containing the Boolware versions.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetClientVersion">
+            <summary>
+            Returns the client version. (e.g. 2.7.0.5)
+            </summary>
+            <returns>a string containing the Boolware .NET client version.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetNumberDatabases">
+            <summary>
+            Returns number of databases.
+            </summary>
+            <returns>number of databases.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetDatabaseInfo(System.Int32)">
+            <summary>
+            Returns meta-data information about a database.
+            </summary>
+            <param name="dbNo">database index, starting from zero.</param>
+            <returns>DBInfo object.</returns>
+        </member>
+        <member name="M:Boolware.Client.GetNumberTables">
+            <summary>
+            Returns number of tables.
+            </summary>
+            <returns>number of tables.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetTableInfo(System.Int32)">
+            <summary>
+            Returns information about a table.
+            </summary>
+            <param name="tableNo">table index, starting from zero.</param>
+            <returns>TableInfo object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetTableInfo(System.String)">
+            <summary>
+            Returns information about a table.
+            </summary>
+            <param name="tableName">table name.</param>
+            <returns>TableInfo object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetNumberColumns(System.String)">
+            <summary>
+            Returns number of columns.
+            </summary>
+            <param name="table">table name.</param>
+            <returns>number of columns in table.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetColumnInfo(System.String,System.Int32)">
+            <summary>
+            Returns info about a column.
+            </summary>
+            <param name="table">the table name in the currently attached database.</param>
+            <param name="columnNo">column index.</param>
+            <returns>ColumnInfo object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetColumnInfoEx(System.String,System.Int32)">
+            <summary>
+            Returns info about a column with extra index settings.
+            </summary>
+            <param name="table">the table name in the currently attached database.</param>
+            <param name="columnNo">column index.</param>
+            <returns>ColumnInfoEx object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.FetchTuples(System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Fetches tuples from the database. This method is capable of fetching XML fields as well as standard columns.
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="columns">the columns/elements to fetch.</param>
+            <param name="hitNo">the requested record index, starting from zero.</param>
+            <param name="blockSize">number of records to fetch.</param>
+            <param name="maxSize">maximum length of any column (zero means no limit).</param>
+            <returns>an array of Tuple objects.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetKeyValue(System.String,System.String,System.Int32)">
+            <summary>
+            Reads a primary or foreign key value.
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="column">the desired column (must be primary or foreign key).</param>
+            <param name="hitNo">the hit number, starting from zero.</param>
+            <returns>the requested value.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetIndexWord(System.String,System.String,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Returns an array of sorted indexed terms (searchable keywords).
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="column">the desired column. Special columns $pk, $vsm, $freetext and $category may be used.</param>
+            <param name="zoomed">zoomed true if only to include words that are part of the current result.</param>
+            <param name="type">the desired type of terms. 
+              <ul><li>0 - default</li>
+              <li>1 - word            </li>
+              <li>2 - string           </li>
+              <li>3 - stemmed words    </li>
+              <li>4 - phonetic words   </li>
+              <li>5 - reversed terms </li></ul></param>
+            <param name="count">desired number of words to read.</param>
+            <param name="seed">a string from where Boolware should start listing terms.</param>
+            <returns>an array of IndexWord objects.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetIndexWord2(System.String,System.String,System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Returns an array of sorted indexed terms (searchable keywords).
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="column">the desired column. Special columns $pk, $vsm, $freetext and $category may be used.</param>
+            <param name="zoomed">zoomed true if only to include words that are part of the current result.</param>
+            <param name="type">the desired type of terms. 
+              <ul><li>0 - default</li>
+              <li>1 - word        </li>
+              <li>2 - string      </li>
+              <li>3 - stemmed words </li>
+              <li>4 - phonetic words </li>
+              <li>5 - reversed terms </li></ul></param>
+            <param name="count">desired number of words to read.</param>
+            <param name="seed">a string from where Boolware should start listing terms.</param>
+            <param name="continuation">Continue from last fetched term, or use "Seed". <ul>
+              <li>0 - no continuation; use seed as start point</li>
+              <li>1 - continue from last fetched index term (seed ignored)</li></ul>
+            </param>
+            <returns>an array of IndexWord objects.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.SortResult(System.String,System.String)">
+            <summary>
+            Sorts the current search result.
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="columns">an SQL "order by" sort expression.</param>
+            <returns>zero on success; otherwise an error code.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetRankMode(System.String)">
+            <summary>
+            Returns the current rank mode.
+            </summary>
+            <param name="table">the desired table.</param>
+            <returns>rankmode<ul>
+              <li>BNORANK = 0; // No ranking</li>
+              <li>BOCCRANK = 1; // Rank by occurence </li>
+              <li>BFREQRANK = 2; // Rank by frequency </li>
+              <li>BSIMRANK = 3; // Rank by similarity </li>
+              <li>BSORTRANK = 4; // Rank by sort (Ascending)</li>
+              <li>BSORTDRANK = 5; // Rank by sort (Descending) </li>
+              <li>BWEIGHTOCCRANK = 6; // Rank by weighted occurence</li>
+              <li>BWEIGHTFREQRANK = 7; // Rank by weighted frequency </li></ul></returns>
+              
+        </member>
+        <member name="M:Boolware.Client.SetRankMode(System.String,System.Int32)">
+            <summary>
+            Sets the new rank mode, returning the previous.
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="rankMode">the new desired rank mode.</param>
+            <returns>
+              <ul><li>BNORANK = 0; // No ranking</li>
+              <li>BOCCRANK = 1; // Rank by occurence</li>
+              <li>BFREQRANK = 2; // Rank by frequency</li>
+              <li>BSIMRANK = 3; // Rank by similarity</li>
+              <li>BSORTRANK = 4; // Rank by sort (Ascending)</li>
+              <li>BSORTDRANK = 5; // Rank by sort (Descending)</li>
+              <li>BWEIGHTOCCRANK = 6; // Rank by weighted occurence</li>
+              <li>BWEIGHTFREQRANK = 7; // Rank by weighted frequency </li></ul></returns>
+              
+        </member>
+        <member name="M:Boolware.Client.CreateCalcColumn(System.String,System.String,System.String)">
+            <summary>
+            Creates a calculated column.
+            </summary>
+            <param name="table">the table, in which to add a new column.</param>
+            <param name="column">the name of the new column.</param>
+            <param name="formula">the mathematical expression that forms the column value.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.RemoveCalcColumn(System.String,System.String)">
+            <summary>
+            Removes a calculated column.
+            </summary>
+            <param name="table">the table, from where to remove the column.</param>
+            <param name="column">the name of the column to remove.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.ComputeStatistics(System.String,System.String,System.Int32)">
+            <summary>
+            Computes statics for a given column, based on the current search result.
+            </summary>
+            <param name="table">the table.</param>
+            <param name="column">the column to compute statistics for.</param>
+            <param name="tileCount">3 for tertials, 4 for quartiles etc.</param>
+            <returns>Statistics() object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetHistory(System.String)">
+            <summary>
+            Gets query history items.
+            </summary>
+            <param name="table">the table that search history is retrieved for.</param>
+            <returns>an array of History() items.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetSettings">
+            <summary>
+            Gets session settings.
+            </summary>
+            <returns>a Settings() object.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.SetSettings(Boolware.Settings)">
+            <summary>
+            Sets session settings.
+            </summary>
+            <param name="settings">the new settings.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.GetSettingsXML">
+            <summary>
+            Gets session settings as XML
+            </summary>
+            <returns>settings as an XML document.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.SetSettingsXML(System.String)">
+            <summary>
+            Sets session settings as XML.
+            </summary>
+            <param name="XML">the new settings.</param>
+            <returns>zero on success; otherwise a negative error or positive warning.</returns>
+            
+        </member>
+        <member name="M:Boolware.Client.FetchVectors(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Reads exported record vectors, in binary or text format.
+            </summary>
+            <param name="table">the desired table.</param>
+            <param name="vector">controls which vector is fetched, Query (1) or Record (2) vector.</param>
+            <param name="content">controls if terms are plain text (1) or coded (2).</param>
+            <param name="hitNo">the requested record index, starting from zero.</param>
+            <param name="blockSize">number of records to fetch.</param>
+            <returns>an array of Tuple objects.</returns>
+            
+        </member>
+        <member name="F:Boolware.Client.MethodCodes.GET_COLUMN_INFO_EX">
+            Client wants info about all extended columns
+        </member>
+        <member name="F:Boolware.Client.MethodCodes.CONNECT_XML">
+            Get more details about extended column
+        </member>
+        <member name="T:Boolware.Client.NetPacket">
+            Boolware net packet.
+        </member>
+        <member name="T:Boolware.Client.ReturnCodes">
+            <summary>
+            Return codes from boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BW_NOERROR">
+            <summary>
+            No error
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.SOFTBOOL_ERROR">
+            <summary>
+            Error occured
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEFORCEDLOGOUT">
+            <summary>
+            Session forced out due to inactivity
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEIMPROPERCLIENT">
+            <summary>
+            Improper Boolware client parameter, not initialized
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDPROTOCOL">
+            <summary>
+            Invalid client protocol
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDCLIENT">
+            <summary>
+            Invalid client
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESTATUSPROTOCOL">
+            <summary>
+            Status request on memstream (socket)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESERVERFAULT">
+            <summary>
+            Severe session error session forced out
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECREATESESSION">
+            <summary>
+            Error creating new session
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESESSIONID">
+            <summary>
+            Error creating session id
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEEXCEPTION">
+            <summary>
+            Exception occurred (out of resources)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BMAXUSERS">
+            <summary>
+            Maximum number of users reached
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESERVERTOOBUSY">
+            <summary>
+            Command rejected, try again
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESESSIONRUNNING">
+            <summary>
+            Session is already running
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECONNECTDS">
+            <summary>
+            Could not connect with data source
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESESSIONNOTCONNECTED">
+            <summary>
+            Session does not exist in Boolware session map and is not connected
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOMOREKEYS">
+            <summary>
+            No more keys to fetch
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENODATABASEATTACHED">
+            <summary>
+            No database attached to session
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDTABINDEX">
+            <summary>
+            Invalid table index number
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDCOLINDEX">
+            <summary>
+            Invalid column index number
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDDBINDEX">
+            <summary>
+            Invalid database index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDATABASEOFFLINE">
+            <summary>
+            Database OFF LINE
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDATABASELOADING">
+            <summary>
+            Database is beeing loaded
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLENOTINDEXED">
+            <summary>
+            Table marked not indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLENOTONLINE">
+            <summary>
+            Table is not online (or readonly)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEATLEASTONETABLE">
+            <summary>
+            No table specified, at least one should be.
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOTABLESPEC">
+            <summary>
+            A Table must be specified in Rank Command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEWRONGSTATISTICS">
+            <summary>
+            Wrong statistics in Sub Zoom
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOANALYZENAME">
+            <summary>
+            Must specify name of analyze to be Opened/Closed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDXML">
+            <summary>
+            Invalid XML document received from client
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECHECKPOINT">
+            <summary>
+            Checkpoint failed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOMMAND">
+            <summary>
+             Error Codes from SBQL
+             Main Command FIND, AND, OR, NOT, XOR, BACK or FORWARD first in QL-string
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESYNTAX">
+            <summary>
+            Syntax Error in QL-string
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BELEFTPAR">
+            <summary>
+            Left Parenthesis expected
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERIGHTPAR">
+            <summary>
+            Right Parenthesis missing
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMISSINGTERM">
+            <summary>
+            At least one specified term contains only non-valid characters
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEQUERYMEMORY">
+            <summary>
+            No memory for Query operation
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESEARCH">
+            <summary>
+            Fatal Error when Searching
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPROXIMITY">
+            <summary>
+            Fatal Error when Proximity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVIEWINDEX">
+            <summary>
+            Fatal Error when Viewing Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEENDQUOTE">
+            <summary>
+            End Quotation mark missing
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEENDBRACKET">
+            <summary>
+            End Bracket (]) missing
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEENDINTERVAL">
+            <summary>
+            Term must follow an Interval sign
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMISSENDTERM">
+            <summary>
+            End Interval Term missing
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMISSQUERYSTRING">
+            <summary>
+            No Search string specified (no command)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMISSVIEWSTRING">
+            <summary>
+            No View Index string specified (no command)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENUMAFTERSIGN">
+            <summary>
+            Numeric expected after sign (+/-)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESIMILARITY">
+            <summary>
+            Fatal Error when Similarity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINTERVALSPEC">
+            <summary>
+            No valid Column specified before: open Interval or +/-
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEOPENORTERMS">
+            <summary>
+            Could not open file containing Terms to be searched
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEREADORTERMS">
+            <summary>
+            Could not read file containing Terms to be searched
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESIMEMPTYSTRING">
+            <summary>
+            No text specified for Similarity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKING">
+            <summary>
+            Fatal Error when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETOOMANYLEVELS">
+            <summary>
+            Too many levels in Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMTHRESHOLD">
+            <summary>
+            Threshold for Similarity must be 0.0 - 1.0
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESIMPARAM">
+            <summary>
+            Error in Similarity parameters sim(text),threshold
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETOOMANYPROXTERMS">
+            <summary>
+            Too many Proximity Terms specified (max. 20)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEREADLOCK">
+            <summary>
+            Error when trying to Lock Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPROXNOTALLOWED">
+            <summary>
+            The current Column not indexed for Proximity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEFREETEXTNOTALLOWED">
+            <summary>
+            No Free Text Column within this Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMNOTALLOWED">
+            <summary>
+            Column not indexed for Similarity
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOVALIDCOLUMN">
+            <summary>
+            No valid column specified for OrSearch
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOLUMNNOTSTRING">
+            <summary>
+            Column not indexed for String
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOLUMNNOTPERMUTATED">
+            <summary>
+            Column not indexed for Permutated
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOLUMNNOTSTEM">
+            <summary>
+            Column not indexed for Stemming
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOLUMNNOTPHONETIC">
+            <summary>
+            Column not indexed for Phonetic
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINDEXTYPE">
+            <summary>
+            No valid Index Type
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BELIMITEDSEARCH">
+            <summary>
+            Fatal Error when Limitied Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINDEXERROR">
+            <summary>
+            Fatal Error when opening Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BELIMITEDPK">
+            <summary>
+            Primary Key not allowed in Limited Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BELIMITEDTOOMANYARGS">
+            <summary>
+            Too many Arguments in Limited Search (max. 20)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMNOTPRESENT">
+            <summary>
+            No VSM Column within this Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDECIMALPOINT">
+            <summary>
+            Term contains Decimal point but Column not indexed for Decimals
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLEDEFINITION">
+            <summary>
+            Unbalanced quotation marks when specifying Tables in Global/Tables
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEGLOBALPAREN">
+            <summary>
+            No ending paranthesis in Global Command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOMOREBACKCMD">
+            <summary>
+            The Query History could not be used any longer; too many queries since last FIND
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEBACKFORWNOTALLOWED">
+            <summary>
+            BACK/FORWARD Commands not allowed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOQUERYHISTORY">
+            <summary>
+            Query History is not enabled
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOSORTTYPES">
+            <summary>
+            Could not sort on Types: Text, nText and Image
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEACNOTPRESENT">
+            <summary>
+            No Category Column within this Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEONLYONESIMILARITY">
+            <summary>
+            Only one Similarity Search allowed in one Search Session
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOSTAMPCOLUMN">
+            <summary>
+            Table is not marked for Automatic Categorizing
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEREVERSEZOOM">
+            <summary>
+            Zoomed Index not allowed when Reversed Index Type
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSTARTGTEND">
+            <summary>
+            Start interval greater than End interval
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPKNOTPRESENT">
+            <summary>
+            No primary key in this Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECATNOTPRESENT">
+            <summary>
+            No Category Column within this Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLESETSEARCH">
+            <summary>
+            Db/Table in specified Command not the current Db/Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEREFSETSEARCH">
+            <summary>
+            Error when reading Bitmap for specified Set Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESYSINDEXNOTOPEN">
+            <summary>
+            System Index not Open
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEOVERFLOWSYSBLOB">
+            <summary>
+            Overflow in System Index (BLOB file)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEOVERFLOWSYSINDEX">
+            <summary>
+            Stack overflow in System Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDELETESYSINDEX">
+            <summary>
+            Error when deleting entry in System Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESEARCHSETNOTFOUND">
+            <summary>
+            Specified BLOB not found in System Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAVENOTALLOWED">
+            <summary>
+            Could not execute the SAVE Command; Table not available
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETYPENOTALLOWED">
+            <summary>
+            Specified Type not allowed; types allowed are: Query and Set
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENAMETOOLONG">
+            <summary>
+            Specified name for SAVE/LOAD/REVIEW/DELETE command too long; max 128
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEQNAMEALREADYEXISTS">
+            <summary>
+            Specified name already exists for a saved Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESNAMEALREADYEXISTS">
+            <summary>
+            Specified name already exists for a saved Result
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEOVERFLOWLOCSYSBLOB">
+            <summary>
+            Overflow in Local System Index (BLOB file)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDATETOOLONG">
+            <summary>
+            Specified date for REVIEW/DELETE command too long; max 21
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDELETECOMMAND">
+            <summary>
+            Specified Command must be DELETE
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEREVIEWCOMMAND">
+            <summary>
+            Specified Command must be REVIEW
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAVECOMMAND">
+            <summary>
+            Specified Command must be SAVE
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDELETEARGUMENT">
+            <summary>
+            Both Type and name must be specified when command is DELETE
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAVEARGUMENT">
+            <summary>
+            Valid BLOB types in LOAD/SAVE command are: Query and Result
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETYPESEARCHSET">
+            <summary>
+            One of the types: Query, Result or Set must be the first argument
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEARGUMENT">
+            <summary>
+            One or more Arguments not correct
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESEARCHSETTYPE">
+            <summary>
+            Type of BLOB: Query, Result or Set must be specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAVENAME">
+            <summary>
+            Name of BLOB must be specified when SAVE Command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLES">
+            <summary>
+            Only Tables specified in the FIND Command could be used by AND/OR/NOT
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKDISABLED">
+            <summary>
+            Table not enabled for Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPREFIXMARK">
+            <summary>
+            Each Prefix must be enclosed within quotation marks '\"'
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEENDPREFIXGROUP">
+            <summary>
+            Each Prefix Group must be ended by a comma (,). The last or only Prefix Group should be ended by a semicolon (;)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPREFIXOPERATOR">
+            <summary>
+            Not a valid Operator; must be OR/AND/NOT/XOR
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPREFIXGROUPS">
+            <summary>
+            Too many Prefix Groups max 50 allowed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPREFIXEND">
+            <summary>
+            Last Prefix must be ended by a semicolon to separate Prefixes from search terms
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPREFIXSYNTAX">
+            <summary>
+            After a Prefix only a Group separator (,), an end mark (;) or an operator OR/AND/NOT/XOR could occur
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESELECTCMD">
+            <summary>
+            QL String must start with RELATE(table)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABLECOLUMN">
+            <summary>
+            Command must be directly followed by table.column.
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEONETABLEPERCMD">
+            <summary>
+            Each RELATE command could only search one Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECOLUMNEXPECTED">
+            <summary>
+            Column should follow Table in RELATE Command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABCOLTOOLONG">
+            <summary>
+            A Table name or a Column name could not be more than 128 characters
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAMESELTAB">
+            <summary>
+            The Relate Table in a re-fine must be the same as for the FIND Command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESAMESELINBACK">
+            <summary>
+            BACK/FORWARD Command must have same Relate Table as used in last FIND
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEINVALIDPATH">
+            <summary>
+            No relation found between specified tables
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERELATESYNTAX">
+            <summary>
+            No command can follow after a relate from an old result
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEOPENVSMFILE">
+            <summary>
+            The Similarity File could not be opened (probably missing)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMVECTORSIZE">
+            <summary>
+            The size of the Similarity Vector is negative
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOSCOREQVECTOR">
+            <summary>
+            No Query Similarity Vector could be created from the Search Terms
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMMEMORY">
+            <summary>
+            No memory for Similarity Areas
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BETABFILEENTRY">
+            <summary>
+            Error in the current Table Entry
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEEMPTYVSMFILE">
+            <summary>
+            The Similarity File is empty
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMREAD">
+            <summary>
+            Error when reading Similarity Vectors
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMSEARCH">
+            <summary>
+            Internal Error in Similarity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMEMPTYTERM">
+            <summary>
+            An empty Query Term in Similarity was found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMMEMORYQUERY">
+            <summary>
+            No memory for Similarity Query Vector
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMBTREEOVERFLOW">
+            <summary>
+            Overflow in B-tree for the current Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMWRITETOFILE">
+            <summary>
+            Error writing VSM Score Table to File
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMREADFROMFILE">
+            <summary>
+            Error reading VSM Score Table from File
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMMUSTBEACTIVE">
+            <summary>
+            Similarity Search must have been performed to get a Query Vector
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEVSMNOTERMFORID">
+            <summary>
+            Term Id in Similarity file not found in Index
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOIDFORCAT">
+            <summary>
+            Identification missing; Document number or Primary key must be specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECUSTOMBMNOTEXISTS">
+            <summary>
+            Spec bitmap (custom) not active or has no result
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESUBNOTALLOWED">
+            <summary>
+            Spec sub-command not allowed in the current context
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKIDX">
+            <summary>
+            Error searching IDX File when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKREF">
+            <summary>
+            Error converting REF File when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKREADPROXSZ">
+            <summary>
+            Error reading Prox Size when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKREADPROXSEG">
+            <summary>
+            Error reading Prox Segment when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKTOOMANYDOCS">
+            <summary>
+            More Documents to Rank than result from Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKREADTAB">
+            <summary>
+            Error reading TAB File when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKLOCKCOL">
+            <summary>
+            Could not lock Column when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKWRITESCORE">
+            <summary>
+            Error when writing to Score File
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKMEMORY">
+            <summary>
+            No memory for Ranking Areas
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF1">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF2">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF3">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF4">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BERANKCMPPROXREF5">
+            <summary>
+            Error matching Ref Segments and Prox Segments when Ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOMEMORYSORT">
+            <summary>
+            No memory for Bitmap when Zoom sort
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENODOCNORANK">
+            <summary>
+            No document number specified when Custom Rank 
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOINDEXRANK">
+            <summary>
+            No index (position) specified when Custom Rank
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOCUSTOMRANK">
+            <summary>
+            Custom Rank not initialized
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMEMORYREF">
+            <summary>
+            No Memory for Reference Entry Table when Searching
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESIZEREF">
+            <summary>
+            Size of a Reference Segment negative or GT file size
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEBADALLOC">
+            <summary>
+            Could not allocate memory
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEBADVERSIONREPORT">
+            <summary>
+            Bad version on saved file containing marked terms for report 
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESTATVALUE">
+            <summary>
+            Value to determine upper and lower limit must be 3 to 8
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESTATNONUM">
+            <summary>
+            Columns for statistics must be of type numeric
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BESTATFORMCOL">
+            <summary>
+            Specified name of Formula exists as Column in the current Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEFORMEXIST">
+            <summary>
+            Specified Formula already exists
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEFORMNOTEXIST">
+            <summary>
+            Specified Formula does not exist
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BECALCCOLNOTSORT">
+            <summary>
+            Calculate column could not be sorted
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPERCENTILE">
+            <summary>
+            Too few values to create percentiles 
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEBITOUTSIDEBM">
+            <summary>
+            Read bit outside Bitmap
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEDIFFBMSIZE">
+            <summary>
+            Different sizes in two Bitmaps when (AND/OR/NOT/CLEAR etc.)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BENOADDRFORBM">
+            <summary>
+            No address for Bitmap set
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPROXMEMORY">
+            <summary>
+            No memory when allocating prox vectors
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEPROXREADERROR">
+            <summary>
+            Could not read prox vector
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEMUSTBEFIND">
+            <summary>
+            First query command after an Attach must be FIND
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BEEXPECTEDNUMERIC">
+            <summary>
+            Expected number but non numeric found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSTOPWORDSREMOVED">
+            <summary>
+            Stopwords found and removed prior to Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNONAPPROVEDTERMS">
+            <summary>
+            Non-approved Query Terms found and removed prior to Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSTOPNONAPPROVED">
+            <summary>
+            Both Stopwords and Non-approved Query Terms found and removed prior to Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSYNONYMS">
+            <summary>
+            Synonyms found and used when Quering
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWORSIMILARITY">
+            <summary>
+            Command could not be OR when Similarity Search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOSEARCHTERMS">
+            <summary>
+            No search terms found in this search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORESULTTOBACK">
+            <summary>
+            No Result to Back; the last Command was FIND
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORESULTTOFORWARD">
+            <summary>
+            No Result to present; attempt to position after last Query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWCUSTOMTERMSUSED">
+            <summary>
+            Custom indexed terms used when searching
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWANDNOTCUSTOM">
+            <summary>
+            Command could only be AND or NOT when using Custom Bitmap 
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOSETSEARCHBLOBS">
+            <summary>
+            No SetSearch BLOBs found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSYNONYMSNOTALLOWED">
+            <summary>
+            Column must be word indexed when using synonyms
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWMISSINGTERM">
+            <summary>
+            Missing term
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWDSUNAVAILABLE">
+            <summary>
+            Database is not available
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWCOLUMNNOTFOUND">
+            <summary>
+            A specified Column missing in at least one Table
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWFETCHSIZERESET">
+            <summary>
+            Fetch size out of limits, value reset
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWPROXPARAM">
+            <summary>
+            Proximity parameter Gap specified as zero; parameters possible in wrong order
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWCHANGEDWEIGHT">
+            <summary>
+            Too big weight; reset to maximum (20)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORESULT">
+            <summary>
+            No results, no documents
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWEMPTYINDEX">
+            <summary>
+            The current Index does not contain any Terms
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWINDEXTYPE">
+            <summary>
+            The current Index Type is not valid for this Column; default used
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOMORETERMS">
+            <summary>
+            No more terms to fetch
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWOUTSIDELIMITS">
+            <summary>
+            Request for an Index Term out of limits
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOTERMSFETCHED">
+            <summary>
+            No Index Term has been fetched
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOSORTORDER">
+            <summary>
+            Frequence Index must have sort order (kAscending/kDescending)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORENAME">
+            <summary>
+            Could not create specified filename for subzoom result; default name used
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSUBRESULTNOTUSED">
+            <summary>
+            Specified file for subzoom result not found; research required
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKRESETNORANK1">
+            <summary>
+            The requested Rank mode reset to no Ranking (no Sort performed)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKRESETNORANK2">
+            <summary>
+            The requested Rank mode reset to no Ranking (too many hits)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKRESETNORANK3">
+            <summary>
+            The requested Rank mode reset to no Ranking (no Rankterms found)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKVSMNOTDONE">
+            <summary>
+            Request for Similarity Rank could not be done; no Similarity seach performed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKVSMOCCFREQ">
+            <summary>
+            After Similarity Search no other Ranking is allowed
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKMODENOTSPEC">
+            <summary>
+            No or invalid Rank Mode specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOFREETEXT">
+            <summary>
+            No Column specified and Table not indexed for Free Text
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWJUSTONETERM">
+            <summary>
+            One and only one Term must be specified in Rank command
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOVALIDRANKTERM">
+            <summary>
+            No valid Rank Term specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORANKTERMFOUND">
+            <summary>
+            No Rank Terms found in last query
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORANKTERMAREA">
+            <summary>
+             No Area for Ranked Terms supplied
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORANKTERMPERFORMED">
+            <summary>
+            Rank on each Term must precede this request
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKTERMOUTLIMIT">
+            <summary>
+            Requested Rank Term not found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKNORIGHTPAREN">
+            <summary>
+            Right parenthesis missing in parameter Columns when ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRANKNOLEFTPAREN">
+            <summary>
+            Left parenthesis missing in parameter Columns when ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWDOCNONOTFOUNDRANK">
+            <summary>
+            Document number to be excluded not found (Custom Ranking)
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWCUSTRECNOTINRES">
+            <summary>
+            The record to be included into Custom result not in result
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOINTERVAL">
+            <summary>
+            No closed interval specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNUMINTSAMESIZE">
+            <summary>
+            Start and end intervalin Numeric range must be of the same length
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOGEOCOLUMN">
+            <summary>
+            Not a valid index for geographical searching
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWWRONGRADIUS">
+            <summary>
+            No valid radius specified when circlar geographical search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWWRONGDISTANCE">
+            <summary>
+            No valid distance specified when polygon geographic search
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOGEOSUBCOMMAND">
+            <summary>
+            Not a valid geographic sub command should be: georectangle, geocircle or geopolygon
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNORESULTTOSORT">
+            <summary>
+            No previous result; nothing to sort
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOSORTCOLUMN">
+            <summary>
+            No sort column(s) specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWCANNOTSCORESORT">
+            <summary>
+            Cannot apply score sort in current rank mode 
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWIMPROPERRULE">
+            <summary>
+            Improper rule name specified
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWDUPLICATEDATE">
+            <summary>
+            Duplicate out of date
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWDUPLICATEINVALIDCOL">
+            <summary>
+            Invalid column name in duplicate rule
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOSUCHLANGUAGE">
+            <summary>
+            Message File does not exist for the specified language
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWRECORDOUTSIDERESULT">
+            <summary>
+            The requested Record not within result when fetching VSM Vectors
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNODELETEOBJ">
+            <summary>
+            Specified object for delete not found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWNOREVIEWOBJ">
+            <summary>
+            Specified object for review not found
+            </summary>
+        </member>
+        <member name="F:Boolware.Client.ReturnCodes.BWSETSEARCHDISABLED">
+            <summary>
+            The Boolware Set Search functionality is disabled
+            </summary>
+        </member>
+        <member name="T:Boolware.DBInfo">
+            <summary>
+            Info about a Boolware index.
+            </summary>
+        </member>
+        <member name="F:Boolware.DBInfo.name">
+            <summary>Database name</summary>
+        </member>
+        <member name="F:Boolware.DBInfo.remark">
+            <summary>Boolware remark</summary>
+        </member>
+        <member name="F:Boolware.DBInfo.dsn">
+            <summary>Database DSN, Data Source Name</summary>
+        </member>
+        <member name="F:Boolware.DBInfo.status">
+            <summary>Database status</summary>
+        </member>
+        <member name="T:Boolware.ColumnFlagValues">
+            <summary>
+            The value of field flag and flag2 in the classes ColumnInfo and ColumnInfoEx.
+            Values start with flag correlates to field flag.
+            Values start with flag2 correlates to field flag2.
+            The flag values are ored together.
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagString">
+            <summary>
+            Field is string indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagWord">
+            <summary>
+            Field is word indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagPhonetic">
+            <summary>
+            Field is phonetic indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagProximity">
+            <summary>
+            Field is proximity indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagSimilarity">
+            <summary>
+            Field is indexed for similarity
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagLeftTrunc">
+            <summary>
+            Field is indexed for left truncation search
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagProxLine">
+            <summary>
+            Field is proximity line indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagNormalized">
+            <summary>
+            Field have normalized word indexing, (compress)
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagPermutated">
+            <summary>
+            Field is permutated
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagStemmed">
+            <summary>
+            Field is stemmed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagGrouped">
+            <summary>
+            Field is grouped (fast interval)
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagRankable">
+            <summary>
+            Field is rankable
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagCategorize">
+            <summary>
+            Field marked for categorization
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagDataField">
+            <summary>
+            Field data saved in internal data file
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagIndexField">
+            <summary>
+            Field is indexed
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagFreeText">
+            <summary>
+            Field indexed for global free text
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagAlias">
+            <summary>
+            Field is an alias field for one or more other fields
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagMarkup">
+            <summary>
+            Field marked that it contains markup elements
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagStopWord">
+            <summary>
+            Field uses stop words
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagWithin">
+            <summary>
+            Field index with within
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagForeignKey">
+            <summary>
+            Field is marked as foreign key
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagXML">
+            <summary>
+            Field contains xml
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagSubField">
+            <summary>
+            Field is an indexed xml element field, part of XML column
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagVirtual">
+            <summary>
+            Field is a computed (virtual) column
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.FlagCase">
+            <summary>
+            Field is case sensitive
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2GeoWGS">
+            <summary>
+            Field contains geographical coordinate, Lat or Long WGS84 format
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2GeoMeter">
+            <summary>
+            Field contains geographical coordinate, Lat or Long in meter format like RT90
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2GeoMultiple">
+            <summary>
+            Field contains both Lat and Long values in either WGS84 or meter format
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2AsIsWord">
+            <summary>
+            Field is indexed as exact word
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2AsIsString">
+            <summary>
+            Field indexes as exact string
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnFlagValues.Flag2EndCharacter">
+            <summary>
+            Field marked for end character removal
+            </summary>
+        </member>
+        <member name="T:Boolware.Column">
+            <summary>
+            Contains one column value, as read from the underlying data source.
+            </summary>
+        </member>
+        <member name="F:Boolware.Column.name">
+            <summary>The name of this column</summary>
+        </member>
+        <member name="F:Boolware.Column.type">
+            <summary>The data type of this column, ODBC coded</summary>
+        </member>
+        <member name="F:Boolware.Column.fetchSize">
+            <summary>Fetch size</summary>
+        </member>
+        <member name="F:Boolware.Column.width">
+            <summary>The maximum width of this column</summary>
+        </member>
+        <member name="F:Boolware.Column.length">
+            <summary>The actual length of this value</summary>
+        </member>
+        <member name="F:Boolware.Column.value">
+            <summary>The data value, may be null and may also include null</summary>
+        </member>
+        <member name="F:Boolware.Column.bytes">
+            <summary>The data value, in case of BLOB field</summary>
+        </member>
+        <member name="M:Boolware.Column.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Boolware.TableInfo">
+            <summary>
+            Holds meta-data information about one table.
+            </summary>
+        </member>
+        <member name="F:Boolware.TableInfo.name">
+            <summary>Table name</summary>
+        </member>
+        <member name="F:Boolware.TableInfo.flags">
+            <summary>Boolware Table flags. Bits are
+            <ul>
+            <li>0x1 - Table is indexed by Boolware</li>
+            <li>0x70000000 - Table status bits</li>
+            </ul></summary>
+        </member>
+        <member name="F:Boolware.TableInfo.hitCount">
+            <summary>Number of found tuples in current search result</summary>
+        </member>
+        <member name="F:Boolware.TableInfo.recordCount">
+            <summary>Total number of tuples in this table (may be -1 if unknown)</summary>
+        </member>
+        <member name="M:Boolware.TableInfo.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Boolware.TableInfo.Indexed">
+            <summary>
+            Indicates if this table is indexed by Boolware.
+            </summary>
+            <returns>True if table is indexed by Boolware; otherwise false.</returns>
+        </member>
+        <member name="M:Boolware.TableInfo.Status">
+            <summary>Returns this table's status. Possible states are:
+            <ul>
+            <li>0 - online</li>
+            <li>1 - loading</li>
+            <li>2 - offline</li>
+            <li>3 - pending</li>
+            <li>4 - read only </li>
+            </ul></summary>
+        </member>
+        <member name="T:Boolware.MiscCodes">
+            <summary>
+            Constants used for ranking, index terms fetch, similarity etc
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BNORANK">
+            <summary>
+            No ranking
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BOCCRANK">
+            <summary>
+            Rank by occurrence
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BFREQRANK">
+            <summary>
+            Rank by frequency
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSIMRANK">
+            <summary>
+            Rank by similarity
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSORTRANK">
+            <summary>
+            Rank by sort (Ascending)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSORTDRANK">
+            <summary>
+            Rank by sort (Descending)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWEIGHTOCCRANK">
+            <summary>
+            Rank by weighted occurrence
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWEIGHTFREQRANK">
+            <summary>
+            Rank by weighted frequency
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BEACHTERMOCCRANK">
+            <summary>
+            Rank by occurence each Term
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCUSTOMRANK">
+            <summary>
+            Custom rank 
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BDEFAULTTYPE">
+            <summary>
+            Default Index Type
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWORDTYPE">
+            <summary>
+            Index Type Word
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSTRINGTYPE">
+            <summary>
+            Index Type String
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSTEMTYPE">
+            <summary>
+            Index Type Stem
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BPHONETICTYPE">
+            <summary>
+            Index Type Phonetic
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BREVERSETYPE">
+            <summary>
+            Index Type Reverse (Left Truncation)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCOMPRESSTYPE">
+            <summary>
+            Index Type Compress
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCLUSTHIERTYPE">
+            <summary>
+            Index Type Cluster Hierachic and sorted by hits
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCLUSTINDTYPE">
+            <summary>
+            Index Type Cluster Boolware Index order (level alphabetic)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCLUSTHIERALPHATYPE">
+            <summary>
+            Index Type Cluster Hierachic alphabetic order
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSEARCHTERMTYPE">
+            <summary>
+            Index Type SearchTerm (key preceded by time yo get statistics on Search terms)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BFREQUENCYTYPE">
+            <summary>
+            Index Type Frequency (present terms in frequncy order)
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BASISWORDTYPE">
+            <summary>
+            Index Type Asis Word
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BASISSTRINGTYPE">
+            <summary>
+            Index Type Asis String
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCASEINDEXTYPE">
+            <summary>
+            Index Type Case Sensitive
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BQUANTITYTYPE">
+            <summary>
+            Get number of Terms in the current Index
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BLONGINDEXTYPE">
+            <summary>
+            Index Type Longitude in Multiple Geo field
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWITHINTYPE">
+            <summary>
+            Index Type "Reversed String"
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BFUZZYTYPE">
+            <summary>
+            Index Type "Fuzzy"
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWRDKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Word
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSTRINGKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  String
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BPHONKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Phonetic
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSTEMKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Stemmed
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BREVKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Reversed
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BCASEKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Case sensitive
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BWITHINKEYNOTYPE">
+            <summary>
+            Index Type "Keyno";  Within
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BHIGHINDEXTYPE">
+            <summary>
+            Last approved Index Type
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSIM_QUERY_VECTOR">
+            <summary>
+            The vector type query vector
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSIM_RESULT_VECTOR">
+            <summary>
+            The vector type result vector
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSIM_TERM_TEXT">
+            <summary>
+            The content type term in plain text
+            </summary>
+        </member>
+        <member name="F:Boolware.MiscCodes.BSIM_TERM_NUMBER">
+            <summary>
+            The content type number of the term
+            </summary>
+        </member>
+        <member name="T:Boolware.Response">
+            <summary>
+            Response record returned from Execute() method.
+            </summary>
+        </member>
+        <member name="F:Boolware.Response.String">
+            <summary>Response string from Execute command</summary>
+        </member>
+        <member name="F:Boolware.Response.Int1">
+            <summary>Command dependent response integers from Execute</summary>
+        </member>
+        <member name="F:Boolware.Response.Int2">
+            <summary>Command dependent response integers from Execute</summary>
+        </member>
+        <member name="T:Boolware.History">
+            <summary>
+            Contains one query history item.
+            </summary>
+        </member>
+        <member name="F:Boolware.History.text">
+            <summary>This is the query expression used</summary>
+        </member>
+        <member name="F:Boolware.History.count">
+            <summary>Number of records found, when combined with previous search</summary>
+        </member>
+        <member name="F:Boolware.History.intermediateCount">
+            <summary>Number of records found, just for this subquery</summary>
+        </member>
+        <member name="T:Boolware.Tuple">
+            <summary>
+            Holds a single tuple, as read from the data source.
+            </summary>		
+        </member>
+        <member name="F:Boolware.Tuple.hitNo">
+            <summary>Hit number within current result</summary>
+        </member>
+        <member name="F:Boolware.Tuple.docNo">
+            <summary>Boolware record ID</summary>
+        </member>
+        <member name="F:Boolware.Tuple.score">
+            <summary>Score found, when using any rank mode</summary>
+        </member>
+        <member name="F:Boolware.Tuple.columns">
+            <summary>The columns</summary>
+        </member>
+        <member name="F:Boolware.Tuple.sortColNo">
+            <summary>Sort column</summary>
+        </member>
+        <member name="M:Boolware.Tuple.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Boolware.Tuple.CompareTo(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Boolware.Tuple.GetValue(System.String)">
+            <summary>
+            Gets a column value by using its name.
+            </summary>
+            <param name="column">The column name.</param>
+            <returns>The content of this column (its value).</returns>
+        </member>
+        <member name="T:Boolware.IndexWord">
+            <summary>
+            Holds information about one index term.
+            </summary>
+        </member>
+        <member name="F:Boolware.IndexWord.hitCountZoomed">
+            <summary>Frequency, if zoomed (just terms that exist in current search result)</summary>
+        </member>
+        <member name="F:Boolware.IndexWord.hitCount">
+            <summary>Number of records that contains this term in the whole database</summary>
+        </member>
+        <member name="F:Boolware.IndexWord.termNo">
+            <summary>Internal term no.</summary>
+        </member>
+        <member name="F:Boolware.IndexWord.text">
+            <summary>The keyword string</summary>
+        </member>
+        <member name="T:Boolware.Settings">
+            <summary>
+            Holds session settings.
+            </summary>
+        </member>
+        <member name="F:Boolware.Settings.sessionID">
+            <summary>This session's unique ID</summary>
+        </member>
+        <member name="F:Boolware.Settings.database">
+            <summary>The currently attached database</summary>
+        </member>
+        <member name="F:Boolware.Settings.table">
+            <summary>The name of the table that was most recently queried</summary>
+        </member>
+        <member name="F:Boolware.Settings.autoTruncation">
+            <summary>True if automatic query term right truncation is performed by Boolware</summary>
+        </member>
+        <member name="F:Boolware.Settings.proxGap">
+            <summary>Maximum distance between words, for proximity (Near) searches</summary>
+        </member>
+        <member name="F:Boolware.Settings.proxOrder">
+            <summary>True if order of the terms are important (proximity search)</summary>
+        </member>
+        <member name="F:Boolware.Settings.vsmThreshold">
+            <summary>Lowest acceptable score for similarity searches</summary>
+        </member>
+        <member name="F:Boolware.Settings.hitCount">
+            <summary>Number of records retrieved in current search result</summary>
+        </member>
+        <member name="T:Boolware.Statistics">
+            <summary>
+            Contains statistics computed for one column.
+            </summary>
+        </member>
+        <member name="F:Boolware.Statistics.count">
+            <summary>Number of records with values</summary>
+        </member>
+        <member name="F:Boolware.Statistics.modeCount">
+            <summary>Frequency of the most common value</summary>
+        </member>
+        <member name="F:Boolware.Statistics.mode">
+            <summary>The most common value</summary>
+        </member>
+        <member name="F:Boolware.Statistics.sum">
+            <summary>Sum of all values</summary>
+        </member>
+        <member name="F:Boolware.Statistics.avg">
+            <summary>Arithmetic average</summary>
+        </member>
+        <member name="F:Boolware.Statistics.min">
+            <summary>Lowest value found</summary>
+        </member>
+        <member name="F:Boolware.Statistics.max">
+            <summary>Highest value found</summary>
+        </member>
+        <member name="F:Boolware.Statistics.stddev">
+            <summary>Standard deviation</summary>
+        </member>
+        <member name="F:Boolware.Statistics.variance">
+            <summary>Variance</summary>
+        </member>
+        <member name="F:Boolware.Statistics.median">
+            <summary>Median value</summary>
+        </member>
+        <member name="F:Boolware.Statistics.upper">
+            <summary>Upper tile (tertial, quartile, quintile etc)</summary>
+        </member>
+        <member name="F:Boolware.Statistics.lower">
+            <summary>Lower tile (see also upper)</summary>
+        </member>
+        <member name="T:Boolware.ColumnInfo">
+            <summary>
+            Holds meta-data information about one column.
+            See class ColumnFlagValues for flag values
+            </summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.name">
+            <summary>Column name</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.flags">
+            <summary>Boolware indexing flags. Values are:
+            <ul>
+            <li>0x1 - String indexing</li>
+            <li>0x2 - Word indexing</li>
+            <li>0x4 - Phonetic words </li>
+            <li>0x8 - Proximity search </li>
+            <li>0x10 - Similarity search </li>
+            <li>0x20 - Left truncated search</li>
+            <li>0x40 - Proximity within line </li>
+            <li>0x80 - Normalize string (compress)</li>
+            <li>0x100 - Word permutations</li>
+            <li>0x200 - Stemmed words</li>
+            <li>0x400 - Grouped keys (fast interval)</li>
+            <li>0x800 - Rankable column</li>
+            <li>0x1000 - Categorization field</li>
+            <li>0x10000 - Index with field ID</li>
+            <li>0x20000 - Table global free text index</li>
+            <li>0x40000 - Alias field</li>
+            <li>0x100000 - Field contains markup elements</li>
+            <li>0x200000 - Field uses stop words</li>
+            <li>0x1000000 - Foreign key</li>
+            <li>0x2000000 - XML content column</li>
+            <li>0x4000000 - XML subfield (part of XML content column)</li>
+            <li>0x8000000 - Computed (virtual) column</li>
+            </ul></summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.size">
+            <summary>Maximum size of this column</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.type">
+            <summary>ODBC coded data type</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.primaryKeySequence">
+            <summary>If part of primary key, sequence number</summary>
+        </member>
+        <member name="F:Boolware.ColumnInfo.decimalCount">
+            <summary>Number of decimals</summary>
+        </member>
+        <member name="M:Boolware.ColumnInfo.Copy(Boolware.ColumnInfo)">
+            <summary>
+            Help routine to copy content of ColumnInfo class
+            </summary>
+            <param name="col"></param>
+        </member>
+        <member name="M:Boolware.ColumnInfo.Copy(Boolware.ColumnInfoEx)">
+            <summary>
+            Help routine to copy content of ColumnInfoEx class
+            </summary>
+            <param name="col"></param>
+        </member>
+        <member name="T:Boolware.CounterType">
+            <summary>
+            enumeration values for the performance counter type
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_UNKNOWN">
+            <summary>
+            ct_UNKNOWN counter is not initiated
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_XMLREQUESTS">
+            <summary>
+            counter is XML request counter containing number of handled SofboolXML_request
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_BOOLEANQUERIES">
+            <summary>
+            counter is the boolean query counter containing number of boolean queries
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_SIMQUERIES">
+            <summary>
+            counter is the similarity counter containing number of similarity queries
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_DATAFETCH">
+            <summary>
+            counter is the data fetch counter containing number of fetched tuples
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_INDEXTERMS">
+            <summary>
+            counter is the index term counter containing number of index terms fetched 
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_SORTINGS">
+            <summary>
+            counter is the sort counter containing number of sortings performed
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterType.ct_MAXTYPES">
+            <summary>
+            maximum number of counters
+            </summary>
+        </member>
+        <member name="T:Boolware.PerfCounters">
+            <summary>
+            This class will hold all performance counters from the Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.numCounters">
+            <summary>
+            number of counters stored in counters and timerCounters
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.srvVersion">
+            <summary>
+            version of the connected Boolware server in hex format, e.g. 0x02080019
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.srvStarted">
+            <summary>
+            server start in seconds since 1970 01 01 00:00:00
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.totSessions">
+            <summary>
+            total number of sessions connected to the Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.numSessions">
+            <summary>
+            number of session connected just now to the Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.peakSessions">
+            <summary>
+            highest number of session connected at a time
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.execSessions">
+            <summary>
+            number of executing sessions just now in Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.peakexecSessions">
+            <summary>
+            number of the highest executing sessions at a time 
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.errors">
+            <summary>
+            error reported by Boolware server 
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.timerStart">
+            <summary>
+            time for the last reset of counters in the server in seconds since 1970 01 01 00:00:00
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.timerElapsed">
+            <summary>
+            seconds past since timerStart was reset
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.numCommands">
+            <summary>
+            number of commands performed by the Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.counters">
+            <summary>
+            array of Counters each holding respectivly counter values see class Counter
+            </summary>
+        </member>
+        <member name="F:Boolware.PerfCounters.timerCounters">
+            <summary>
+            array of ElapsedTimeCounters each holding respectivly elapsed time value
+            </summary>
+        </member>
+        <member name="M:Boolware.PerfCounters.#ctor">
+            <summary>
+            Constructor for class that will initate all class members
+            </summary>
+        </member>
+        <member name="M:Boolware.PerfCounters.Read(Boolware.Client.NetPacket)">
+            <summary>
+            Read streamed data from server
+            </summary>
+            <param name="packet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Boolware.ElapsedTimeCounter">
+            <summary>
+            Class contains the millisecond time if connected to a 64-bit Boolware server
+            </summary>
+        </member>
+        <member name="F:Boolware.ElapsedTimeCounter.counterType">
+            <summary>
+            identifier of the counter, see CounterType
+            </summary>
+        </member>
+        <member name="F:Boolware.ElapsedTimeCounter.counterValue">
+            <summary>
+            reserved value for the future
+            </summary>
+        </member>
+        <member name="F:Boolware.ElapsedTimeCounter.elapsedTime">
+            <summary>
+            elapsed time since server started in milliseconds
+            </summary>
+        </member>
+        <member name="F:Boolware.ElapsedTimeCounter.infoString">
+            <summary>
+             name of the counter
+            </summary>
+        </member>
+        <member name="M:Boolware.ElapsedTimeCounter.#ctor">
+            <summary>
+            Construct to initate the class members
+            </summary>
+        </member>
+        <member name="M:Boolware.ElapsedTimeCounter.Read(Boolware.Client.NetPacket)">
+            <summary>
+            Internal read method
+            </summary>
+            <param name="packet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Boolware.CounterAttribute">
+            <summary>
+            class CounterAttribute contains the total accumulated value, the highest and lowest values.
+            It also contains a descriptive counter name
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterAttribute.counterName">
+            <summary>
+            name of the counter
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterAttribute.accumulated">
+            <summary>
+            The accumulated value for the counter
+            Depending on the counter type this value contains: 
+            <list type="bullet">
+            <item>counter type is ct_XMLREQUESTS - number of xml performed requests</item>
+            <item>counter type is ct_BOOLEANQUERIES - number of hits for boolean queries</item>
+            <item>counter type is ct_SIMQUERIES - number of hits for similarity queries</item>
+            <item>counter type is ct_DATAFETCH - number of tuples fetched</item>
+            <item>counter type is ct_INDEXTERMS - number of index terms fetched</item>
+            <item>counter type is ct_SORTINGS - number of tuples sorted</item>
+            </list>
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterAttribute.maxValue">
+            <summary>
+            The maximum value for the counter
+            </summary>
+        </member>
+        <member name="F:Boolware.CounterAttribute.minValue">
+            <summary>
+            The minimum value of the counter
+            </summary>
+        </member>
+        <member name="M:Boolware.CounterAttribute.#ctor">
+            <summary>
+            Contructor for class initiate all members
+            </summary>
+        </member>
+        <member name="M:Boolware.CounterAttribute.Read(Boolware.Client.NetPacket)">
+            <summary>
+            Internal read method
+            </summary>
+            <param name="packet"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Boolware.Counter">
+            <summary>
+            Class encapsulate values for a Boolware performance counter values
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.counterType">
+            <summary>
+            identifier of the counter, see CounterType
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.counterName">
+            <summary>
+            literal name of the counter
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.accumulated">
+            <summary>
+            number of times this counter is updated
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.itemValue">
+            <summary>
+            accumulated values for the counter, see CounterAttribute
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.threadTimeValue">
+            <summary>
+            accumulated thread time values for the counter, See CounterAttribute 
+            </summary>
+        </member>
+        <member name="F:Boolware.Counter.wallTimeValue">
+            <summary>
+            accumulated wall clock time values for the counter, see CounterAttribute
+            </summary>
+        </member>
+        <member name="M:Boolware.Counter.#ctor">
+            <summary>
+            Constructor for class Counter
+            </summary>
+        </member>
+        <member name="M:Boolware.Counter.Read(Boolware.Client.NetPacket)">
+            <summary>
+            internal read method
+            </summary>
+            <param name="packet"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

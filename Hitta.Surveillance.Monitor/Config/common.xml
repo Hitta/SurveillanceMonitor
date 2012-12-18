@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+  <object id="panels" type="Hitta.Surveillance.Monitor.MonitorPanels.PanelsCollection">
+    <constructor-arg name="panels">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="localhost-panel"/>
+        <ref object="bf3-stats"/>
+      </list>
+    </constructor-arg>
+  </object>
+ 
+  <object id="colorCoderNoConnection" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="100,100,100"/>
+    <constructor-arg name="foreColor2" value="0,0,0"/>
+    <constructor-arg name="backColor" value="0,0,0"/>
+  </object>
+  <object id="colorCoderError" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="DimGray"/>
+    <constructor-arg name="foreColor2" value="DarkRed"/>
+    <constructor-arg name="backColor" value="Red"/>
+  </object>
+  <object id="colorCoderWarning" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="Green"/>
+    <constructor-arg name="foreColor2" value="Chocolate"/>
+    <constructor-arg name="backColor" value="Orange"/>
+  </object>
+
+  <object id="responseTestHealthLevel0" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="200"/>
+    <constructor-arg name="colorCoder" ref="colorCoderResponseTesInService"/>
+    <property name="Successor" ref="responseTestHealthLevel1"/>
+  </object>
+  <object id="responseTestHealthLevel1" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="404"/>
+    <constructor-arg name="colorCoder" ref="colorCoderResponseTestNotInService"/>
+    <property name="Successor" ref="responseTestHealthLevel2"/>
+  </object>
+  <object id="responseTestHealthLevel2" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="503"/>
+    <constructor-arg name="colorCoder" ref="colorCoderResponseTestNotInService"/>
+    <property name="Successor" ref="responseTestHealthLevel3"/>
+  </object>
+  <object id="responseTestHealthLevel3" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
+    <constructor-arg name="controlValue" value="-2"/>
+    <constructor-arg name="colorCoder" ref="colorCoderResponseTestError"/>
+  </object>
+  <object id="colorCoderResponseTesInService" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="0,190,0"/>
+    <constructor-arg name="foreColor2" value="0,0,0"/>
+    <constructor-arg name="backColor" value="0,0,0"/>
+  </object>
+  <object id="colorCoderResponseTestNotInService" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="255,215,0"/>
+    <constructor-arg name="foreColor2" value="0,0,0"/>
+    <constructor-arg name="backColor" value="0,0,0"/>
+  </object>
+  <object id="colorCoderResponseTestError" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
+    <constructor-arg name="foreColor1" value="255,0,0"/>
+    <constructor-arg name="foreColor2" value="0,0,0"/>
+    <constructor-arg name="backColor" value="0,0,0"/>
+  </object>
+</objects>

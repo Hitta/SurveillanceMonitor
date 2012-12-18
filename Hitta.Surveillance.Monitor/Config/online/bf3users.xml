@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <object id="bf3-stats" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+	    <object type="Hitta.Surveillance.Monitor.LayoutEngines.HorizontalLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="bf3-stats-pc-users"/>
+        <ref object="bf3-stats-360-users"/>
+        <ref object="bf3-stats-ps3-users"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="BF3 user stats"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <constructor-arg name="headerControl" ref="bf3-stats-response-test"/>
+    <property name="MinimumSize" value="0,200"/>
+  </object>
+  <object id="bf3-stats-response-test" type="Hitta.Surveillance.Monitor.MonitorPanels.ColorSignalPanel">
+    <constructor-arg name="dataCollectorAdapter" ref="bf3-stats-response-test-datacollector"/>
+    <constructor-arg name="healthLevel" ref="responseTestHealthLevel0"/>
+    <property name="MinimumSize" value="0,100"/>
+  </object>
+  <object id="bf3-stats-response-test-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpResponseCodeDataCollector">
+    <constructor-arg name="url" value="http://api.bf3stats.com/global/onlinestats/"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName">
+      <null/>
+    </constructor-arg>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+  
+  <object id="bf3-stats-pc-users" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="bf-users-graph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="bf3-stats-pc-users-datacollector"/>
+    <constructor-arg name="healthLevel" ref="bf-users-health-level"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,150"/>
+  </object>
+  <object id="bf3-stats-pc-users-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://api.bf3stats.com/global/onlinestats/"/>
+    <constructor-arg name="path" value="pc"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="PC users online"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="bf3-stats-360-users" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="bf-users-graph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="bf3-stats-360-users-datacollector"/>
+    <constructor-arg name="healthLevel" ref="bf-users-health-level"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,150"/>
+  </object>
+  <object id="bf3-stats-360-users-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://api.bf3stats.com/global/onlinestats/"/>
+    <constructor-arg name="path" value="360"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="PC users online"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="bf3-stats-ps3-users" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="bf-users-graph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="bf3-stats-ps3-users-datacollector"/>
+    <constructor-arg name="healthLevel" ref="bf-users-health-level"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,150"/>
+  </object>
+  <object id="bf3-stats-ps3-users-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://api.bf3stats.com/global/onlinestats/"/>
+    <constructor-arg name="path" value="ps3"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="PC users online"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="bf-users-health-level" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="-1"/>
+    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
+    <property name="Successor" ref="bf-users-health-level-warn"/>
+  </object>
+  <object id="bf-users-health-level-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
+    <constructor-arg name="controlValue" value="19000"/>
+    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+    <property name="Successor" ref="bf-users-health-level-warn-low"/>
+  </object>
+  <object id="bf-users-health-level-warn-low" type="Hitta.Surveillance.Monitor.HealthLevels.LowerThanHealthLevel">
+    <constructor-arg name="controlValue" value="1000"/>
+    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+  </object>
+  
+  <object id="bf-users-graph" type="Hitta.Surveillance.Monitor.HistoryGraph" singleton="false">
+    <constructor-arg name="showValue" value="true"/>
+    <constructor-arg name="updateInterval">
+      <object type="System.TimeSpan">
+        <constructor-arg name="days" value="0"/>
+        <constructor-arg name="hours" value="0"/>
+        <constructor-arg name="minutes" value="0"/>
+        <constructor-arg name="seconds" value="1"/>
+      </object>
+    </constructor-arg>
+    <constructor-arg name="chunkSize" value="60"/>
+    <constructor-arg name="chunkUpdateInterval">
+      <object type="System.TimeSpan">
+        <constructor-arg name="days" value="0"/>
+        <constructor-arg name="hours" value="0"/>
+        <constructor-arg name="minutes" value="1"/>
+        <constructor-arg name="seconds" value="0"/>
+      </object>
+    </constructor-arg>
+    <property name="YScale" value="20000"/>
+  </object>
+</objects>

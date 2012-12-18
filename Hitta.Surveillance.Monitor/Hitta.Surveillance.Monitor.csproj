@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AD69A419-8DA7-4EC2-8266-03966807F67B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hitta.Surveillance.Monitor</RootNamespace>
+    <AssemblyName>Hitta.Surveillance.Monitor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>hitta.snk</AssemblyOriginatorKeyFile>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <StartupObject>Hitta.Surveillance.Monitor.Program</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>Migrated rules for Hitta.Surveillance.Monitor.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="antlr.runtime, Version=2.7.6.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalAssemblies\antlr.runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS">
+      <HintPath>..\ExternalAssemblies\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ">
+      <HintPath>..\ExternalAssemblies\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="BoolwareNET">
+      <HintPath>..\ExternalAssemblies\BoolwareNET.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalAssemblies\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>..\ExternalAssemblies\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core, Version=1.3.2.40943, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalAssemblies\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Net">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColorCoders\ColorCoder.cs" />
+    <Compile Include="ColorCoders\ColorCoderCustom.cs" />
+    <Compile Include="ColorCoders\ColorCoderNormal.cs" />
+    <Compile Include="ColorCoders\ColorCoderUnknown.cs" />
+    <Compile Include="Controls\Bucket.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Bucket.Designer.cs">
+      <DependentUpon>Bucket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GraphBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataCollectors\BoolwareDataCollector.cs" />
+    <Compile Include="DataCollectors\BWCSessionsDataReader.cs" />
+    <Compile Include="DataCollectors\ConsoleAppDataCollector.cs" />
+    <Compile Include="DataCollectors\ConsoleAppDataReader.cs" />
+    <Compile Include="DataCollectors\BWCPerfCountersDataReader.cs" />
+    <Compile Include="DataCollectors\HttpResponseCodeDataCollector.cs" />
+    <Compile Include="DataCollectors\HttpNginxDataCollector.cs" />
+    <Compile Include="DataCollectors\HttpJsonDataCollector.cs" />
+    <Compile Include="DataCollectors\HttpXpathDataCollector.cs" />
+    <Compile Include="Controls\HistoryGraph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HistoryGraph.Designer.cs">
+      <DependentUpon>HistoryGraph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataCollectors\DataCollectorAdapter.cs" />
+    <Compile Include="DataCollectors\DataCollectorAdapterBase.cs" />
+    <Compile Include="DataCollectors\HttpDataCollector.cs" />
+    <Compile Include="DataCollectors\PerformanceCounterDataCollector.cs" />
+    <Compile Include="DataCollectors\RefiningDataCollector.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="HealthLevels\EqualsHealthLevel.cs" />
+    <Compile Include="LayoutEngines\HorizontalLayoutEngine.cs" />
+    <Compile Include="LayoutEngines\VerticalFlowLayoutEngine.cs" />
+    <Compile Include="Controls\MonitorLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MonitorLayoutPanel.Designer.cs">
+      <DependentUpon>MonitorLayoutPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Graph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Graph.Designer.cs">
+      <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HealthLevels\HealthLevel.cs" />
+    <Compile Include="HealthLevels\HealthLevelBase.cs" />
+    <Compile Include="HealthLevels\HigherThanHealthLevel.cs" />
+    <Compile Include="HealthLevels\LowerThanHealthLevel.cs" />
+    <Compile Include="MonitorPanels\BucketMonitorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\BucketMonitorPanel.Designer.cs">
+      <DependentUpon>BucketMonitorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\ColorSignalPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\ColorSignalPanel.Designer.cs">
+      <DependentUpon>ColorSignalPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\CompositPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\CompositPanel.Designer.cs">
+      <DependentUpon>CompositPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\ContainerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\ContainerPanel.Designer.cs">
+      <DependentUpon>ContainerPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\NMSTextProvider.cs" />
+    <Compile Include="MonitorPanels\FlowTextPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\FlowTextPanel.Designer.cs">
+      <DependentUpon>FlowTextPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\GraphMonitorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\GraphMonitorPanel.Designer.cs">
+      <DependentUpon>GraphMonitorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\GraphMonitorPanelCompact.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\GraphMonitorPanelCompact.Designer.cs">
+      <DependentUpon>GraphMonitorPanelCompact.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\MonitorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\NMSTextProviderPredicate.cs" />
+    <Compile Include="MonitorPanels\PanelsCollection.cs" />
+    <Compile Include="MonitorPanels\PipPanel.cs" />
+    <Compile Include="MonitorPanels\SignalPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\SignalPanel.Designer.cs">
+      <DependentUpon>SignalPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonitorPanels\TestTextProvider.cs" />
+    <Compile Include="MonitorPanels\TextProvider.cs" />
+    <Compile Include="ObjectFactoryWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TextUtils.cs" />
+    <EmbeddedResource Include="Controls\HistoryGraph.resx">
+      <DependentUpon>HistoryGraph.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Graph.resx">
+      <DependentUpon>Graph.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MonitorLayoutPanel.resx">
+      <DependentUpon>MonitorLayoutPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\ColorSignalPanel.resx">
+      <DependentUpon>ColorSignalPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\CompositPanel.resx">
+      <DependentUpon>CompositPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\GraphMonitorPanel.resx">
+      <DependentUpon>GraphMonitorPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\GraphMonitorPanelCompact.resx">
+      <DependentUpon>GraphMonitorPanelCompact.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\SignalPanel.resx">
+      <DependentUpon>SignalPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorPanels\TextPanel.resx">
+      <DependentUpon>TextPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="hitta.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="MonitorPanels\TextPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonitorPanels\TextPanel.Designer.cs">
+      <DependentUpon>TextPanel.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Config\common.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\localhost\localhost.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\online\bf3users.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Resources\safari_android.png" />
+    <None Include="Resources\earth.png" />
+    <None Include="Resources\safari.png" />
+    <None Include="Resources\opera.png" />
+    <None Include="Resources\netscape.png" />
+    <None Include="Resources\ie.png" />
+    <None Include="Resources\firefox.png" />
+    <None Include="Resources\chrome.png" />
+    <None Include="Resources\apple.png" />
+    <None Include="Resources\android.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

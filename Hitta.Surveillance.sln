@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalAssemblies", "ExternalAssemblies", "{502DF53E-DE77-49C2-A73D-759D05EC7522}"
+	ProjectSection(SolutionItems) = preProject
+		ExternalAssemblies\antlr.runtime.dll = ExternalAssemblies\antlr.runtime.dll
+		ExternalAssemblies\Apache.NMS.ActiveMQ.dll = ExternalAssemblies\Apache.NMS.ActiveMQ.dll
+		ExternalAssemblies\Apache.NMS.dll = ExternalAssemblies\Apache.NMS.dll
+		ExternalAssemblies\Common.Logging.dll = ExternalAssemblies\Common.Logging.dll
+		ExternalAssemblies\Newtonsoft.Json.Net20.dll = ExternalAssemblies\Newtonsoft.Json.Net20.dll
+		ExternalAssemblies\Oracle.DataAccess.dll = ExternalAssemblies\Oracle.DataAccess.dll
+		ExternalAssemblies\Spring.Core.dll = ExternalAssemblies\Spring.Core.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hitta.Surveillance.Monitor", "Hitta.Surveillance.Monitor\Hitta.Surveillance.Monitor.csproj", "{AD69A419-8DA7-4EC2-8266-03966807F67B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF6B1BC8-549D-46AC-B5C7-A5F55106BB0E}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Hitta.Surveillance.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AD69A419-8DA7-4EC2-8266-03966807F67B}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <object id="localhost-panel" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="localhost-processor"/>
+        <ref object="localhost-network"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="Localhost WMI"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="0,200"/>
+  </object>
+
+
+  <object id="localhost-processor" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="dataCollectorAdapter" ref="localhost-processor-datacollector"/>
+    <constructor-arg name="healthLevel" ref="localhost-processor-healthlevel"/>
+    <constructor-arg name="yScale" value="100"/>
+    <property name="Margin" value="3,0,3,0"/>
+  </object>
+  <object id="localhost-processor-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.PerformanceCounterDataCollector">
+    <constructor-arg name="categoryName" value="Processor Information"/>
+    <constructor-arg name="counterName" value="% Processor Time"/>
+    <constructor-arg name="instanceName" value="_Total"/>
+    <constructor-arg name="machineName" value="."/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="% Processor Time"/>
+    <constructor-arg name="description" value=""/>
+  </object>
+
+  <object id="localhost-network" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="dataCollectorAdapter" ref="localhost-network-datacollector"/>
+    <constructor-arg name="healthLevel" ref="localhost-network-healthlevel"/>
+    <constructor-arg name="yScale" value="100"/>
+    <property name="Margin" value="3,0,3,0"/>
+  </object>
+  <object id="localhost-network-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.PerformanceCounterDataCollector">
+    <constructor-arg name="categoryName" value="Per Processor Network Interface Card Activity"/>
+    <constructor-arg name="counterName" value="Sent Packets/sec"/>
+    <constructor-arg name="instanceName" value="_Total"/>
+    <constructor-arg name="machineName" value="."/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="Network packets/sec"/>
+    <constructor-arg name="description" value=""/>
+  </object>
+  
+  <object id="localhost-processor-healthlevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="-1"/>
+    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
+    <property name="Successor" ref="localhost-processor-healthlevel-warn"/>
+  </object>
+  <object id="localhost-processor-healthlevel-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
+    <constructor-arg name="controlValue" value="80"/>
+    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+  </object>
+
+  <object id="localhost-network-healthlevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="-1"/>
+    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
+    <property name="Successor" ref="localhost-network-healthlevel-warn"/>
+  </object>
+  <object id="localhost-network-healthlevel-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
+    <constructor-arg name="controlValue" value="100"/>
+    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+  </object>
+</objects>
