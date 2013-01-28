@@ -32,7 +32,19 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
             {
                 if(i == (path.Length -1 ))
                 {
-                    var current = jObject.Value<double>(path[i]);
+                    var jVal = (JValue)jObject[path[i]];
+
+                    double current = 0;
+
+                    if (jVal.Type == JTokenType.Boolean)
+                    {
+                        current = (bool)jVal.Value ? 1 : 0;
+                    }
+                    else
+                    {
+                        current = jVal.Value<double>();
+                    }
+
                     if (this.calculateFromLastMeasure)
                     {
                         try
