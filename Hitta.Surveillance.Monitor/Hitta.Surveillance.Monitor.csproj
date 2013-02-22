@@ -68,6 +68,15 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime, Version=2.7.6.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -131,6 +140,7 @@
     <Compile Include="DataCollectors\ConsoleAppDataCollector.cs" />
     <Compile Include="DataCollectors\ConsoleAppDataReader.cs" />
     <Compile Include="DataCollectors\BWCPerfCountersDataReader.cs" />
+    <Compile Include="DataCollectors\BasicAuthHttpDataCollector.cs" />
     <Compile Include="DataCollectors\HttpResponseCodeDataCollector.cs" />
     <Compile Include="DataCollectors\HttpNginxDataCollector.cs" />
     <Compile Include="DataCollectors\HttpJsonDataCollector.cs" />
@@ -298,6 +308,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="hitta.snk" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -335,9 +346,11 @@
   <ItemGroup>
     <Content Include="Config\common.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\localhost\localhost.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\online\bf3users.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
