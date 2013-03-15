@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects xmlns="http://www.springframework.net">
+ 
   <object id="panels" type="Hitta.Surveillance.Monitor.MonitorPanels.PanelsCollection">
     <constructor-arg name="panels">
       <list element-type="System.Windows.Forms.UserControl">
         <ref object="localhost-panel"/>
-        <ref object="bf3-stats"/>
+        <!--ref object="bf3-stats"/-->
       </list>
     </constructor-arg>
   </object>

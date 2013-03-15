@@ -136,11 +136,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataCollectors\BoolwareDataCollector.cs" />
+    <Compile Include="DataCollectors\BoolwareLoadBalanceCollector.cs" />
     <Compile Include="DataCollectors\BWCSessionsDataReader.cs" />
     <Compile Include="DataCollectors\ConsoleAppDataCollector.cs" />
     <Compile Include="DataCollectors\ConsoleAppDataReader.cs" />
     <Compile Include="DataCollectors\BWCPerfCountersDataReader.cs" />
     <Compile Include="DataCollectors\BasicAuthHttpDataCollector.cs" />
+    <Compile Include="DataCollectors\BoolwareTimestampDataCollector.cs" />
     <Compile Include="DataCollectors\HttpResponseCodeDataCollector.cs" />
     <Compile Include="DataCollectors\HttpNginxDataCollector.cs" />
     <Compile Include="DataCollectors\HttpJsonDataCollector.cs" />
@@ -342,20 +344,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Config\common.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\localhost\localhost.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Config\online\bf3users.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Resources\safari_android.png" />
     <None Include="Resources\earth.png" />
     <None Include="Resources\safari.png" />
@@ -366,6 +355,57 @@
     <None Include="Resources\chrome.png" />
     <None Include="Resources\apple.png" />
     <None Include="Resources\android.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\boolware\common.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool01.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool02.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool03.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool03.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool04.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool04.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool05.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool05.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool06.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool06.sth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool07.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\boolware\hit-bool08.osl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\common_prod.xml" />
+    <Content Include="Config\common.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\localhost\localhost.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\online\bf3users.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

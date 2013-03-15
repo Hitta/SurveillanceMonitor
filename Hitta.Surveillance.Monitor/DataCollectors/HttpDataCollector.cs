@@ -27,7 +27,7 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
                 client.Proxy = null;
                 return GetResponseInternal(client.DownloadString(_url));
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return -1;
             }
