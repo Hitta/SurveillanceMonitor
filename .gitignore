@@ -2,3 +2,4 @@ Hitta.Surveillance.Monitor/bin/
 Hitta.Surveillance.Monitor/debug/
 Hitta.Surveillance.Monitor/obj/
 app.manifest
+*.suo
