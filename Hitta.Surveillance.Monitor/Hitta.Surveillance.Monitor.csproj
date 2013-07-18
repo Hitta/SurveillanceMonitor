@@ -141,6 +141,7 @@
     <Compile Include="DataCollectors\BWCPerfCountersDataReader.cs" />
     <Compile Include="DataCollectors\BasicAuthHttpDataCollector.cs" />
     <Compile Include="DataCollectors\BoolwareTimestampDataCollector.cs" />
+    <Compile Include="DataCollectors\HttpBodyCompareDataCollector.cs" />
     <Compile Include="DataCollectors\HttpResponseCodeDataCollector.cs" />
     <Compile Include="DataCollectors\HttpNginxDataCollector.cs" />
     <Compile Include="DataCollectors\HttpJsonDataCollector.cs" />
@@ -357,6 +358,7 @@
   <ItemGroup>
     <Content Include="Config\common.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\localhost\localhost.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
