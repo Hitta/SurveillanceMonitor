@@ -28,8 +28,14 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
             
         }
         public GraphMonitorPanelCompact(GraphBase graph, DataCollectorAdapter dataCollectorAdapter, HealthLevel healthLevel, PipPanel pipPanel)
+            : this(graph, dataCollectorAdapter, healthLevel, pipPanel, null)
+        {
+
+        }
+        public GraphMonitorPanelCompact(GraphBase graph, DataCollectorAdapter dataCollectorAdapter, HealthLevel healthLevel, PipPanel pipPanel, PipPanel pipPanelRight)
         {
             graph.PipPanel = pipPanel;
+            graph.PipPanelRight = pipPanelRight;
             this.dataCollectorAdapter = dataCollectorAdapter;
             this.healthLevel = healthLevel;
             InitializeComponent();

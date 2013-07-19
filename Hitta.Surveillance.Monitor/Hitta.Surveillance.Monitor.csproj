@@ -362,6 +362,7 @@
     </Content>
     <Content Include="Config\localhost\localhost.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\online\bf3users.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

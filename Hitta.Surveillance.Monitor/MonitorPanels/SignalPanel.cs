@@ -17,6 +17,8 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
             InitializeComponent();
         }
 
+        public Point Position { get; set; }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -30,11 +32,10 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
 
             int side = height > width ? width : height;
 
-            RectangleF drawingRect = new Rectangle(Margin.Left + ((width - side) / 2), Margin.Top + ((height - side) / 2), side, side);
+            RectangleF drawingRect = new Rectangle(Position.X + Margin.Left + ((width - side) / 2), Position.Y + Margin.Top + ((height - side) / 2), side, side);
             
             var path = new GraphicsPath();
             path.AddEllipse(drawingRect);
-
 
             var borderColor = Color.FromArgb(255, (int)(ForeColor.R / 1.3), (int)(ForeColor.G / 1.3), (int)(ForeColor.B / 1.3));
             

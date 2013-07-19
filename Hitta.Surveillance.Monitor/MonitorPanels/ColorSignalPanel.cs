@@ -124,6 +124,11 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
 
         public void SetBounds(Rectangle bounds)
         {
+            signalPanel.Position = bounds.Location;
+            if(textPanel != null)
+            {
+                textPanel.Position = bounds.Location;
+            }
             Top = bounds.Top;
             Left = bounds.Left;
             Width = bounds.Width;

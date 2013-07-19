@@ -24,6 +24,8 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
             InitializeComponent();
         }
 
+        public Point Position { get; set; }
+
         public override string Text
         {
             get
@@ -45,6 +47,7 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
             stringFormat.FormatFlags = StringFormatFlags.NoWrap;
 
             RectangleF safeFrame = ClientRectangle;
+            safeFrame.Location = Position;
 
             var fontSize = TextUtils.GetFontSize(e.Graphics, Text, Font, safeFrame.Size);
 
