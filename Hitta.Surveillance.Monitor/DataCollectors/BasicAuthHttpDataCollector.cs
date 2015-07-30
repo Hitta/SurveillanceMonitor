@@ -9,7 +9,7 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
         protected BasicAuthHttpDataCollector(string displayName, string description, int interval, string url, string user, string pwd)
             : base(displayName, description, interval, url)
         {
-            client.Credentials = new NetworkCredential(user, pwd);
+            Client.Credentials = new NetworkCredential(user, pwd);
         }
 
     }

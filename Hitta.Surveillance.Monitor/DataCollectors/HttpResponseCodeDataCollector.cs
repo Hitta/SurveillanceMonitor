@@ -19,7 +19,7 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
             {
                 try
                 {
-                    client.DownloadString(base._url);
+                    Client.DownloadString(base.Url);
                     return 200;
                 }
                 catch (WebException ex)

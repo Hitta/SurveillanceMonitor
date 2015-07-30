@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace Hitta.Surveillance.Monitor.DataCollectors
 {
@@ -9,20 +10,25 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
         private bool calculateFromLastMeasure;
         private int multiplier;
 
-        public HttpJsonDataCollector(string displayName, string description, int interval, string url, string path, bool calculateFromLastMeasure, int multiplier)
-            : base(displayName, description, interval, url)
+        public HttpJsonDataCollector(string displayName, string description, int interval, string url, string path, bool calculateFromLastMeasure, int multiplier, string httpMethod, string body)
+            : base(displayName, description, interval, url, httpMethod, body)
         {
             this.path = path.Split('/');
             this.calculateFromLastMeasure = calculateFromLastMeasure;
             this.multiplier = multiplier;
         }
 
+        public HttpJsonDataCollector(string displayName, string description, int interval, string url, string path, bool calculateFromLastMeasure, int multiplier)
+            : this(displayName, description, interval, url, path, calculateFromLastMeasure, multiplier, "GET", string.Empty)
+        { }
+
+
         public HttpJsonDataCollector(string displayName, string description, int interval, string url, string path, bool calculateFromLastMeasure)
             : this(displayName, description, interval, url, path, calculateFromLastMeasure, 1)
         {}
 
         public HttpJsonDataCollector(string displayName, string description, int interval, string url)
-            : this(displayName, description, interval, url, "count", false, 1)
+            : this(displayName, description, interval, url, "count", false)
         {}
 
         protected override int GetResponseInternal(string response)

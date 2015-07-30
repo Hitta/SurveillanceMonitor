@@ -19,7 +19,7 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
         {
             try
             {
-                string response2 = client.DownloadString(url2);
+                string response2 = Client.DownloadString(url2);
                 return response.CompareTo(response2);
             }
             catch (Exception)

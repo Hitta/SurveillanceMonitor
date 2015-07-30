@@ -5,15 +5,24 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
 {
     public class HttpDataCollector : DataCollectorAdapterBase
     {
-        protected readonly string _url;
-        private bool initialized;
-        protected readonly WebClient client;
+        protected readonly string Url;
+        protected readonly WebClient Client;
+        private bool _initialized;
+        private readonly string _httpMethod;
+        private readonly string _body;
 
-        protected HttpDataCollector(string displayName, string description, int interval, string url) : base(displayName, description, interval)
+        protected HttpDataCollector(string displayName, string description, int interval, string url, string httpMethod, string body) 
+            : base(displayName, description, interval)
         {
-            _url = url;
-            client = new WebClient {Proxy = null};
+            Url = url;
+            Client = new WebClient { Proxy = null };
+            _httpMethod = httpMethod.ToUpperInvariant();
+            _body = body;
         }
+
+        protected HttpDataCollector(string displayName, string description, int interval, string url) 
+            : this(displayName, description, interval, url, "GET", string.Empty)
+        {}
 
         protected virtual int GetResponseInternal(string response)
         {
@@ -24,8 +33,9 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
         {
             try
             {
-                client.Proxy = null;
-                return GetResponseInternal(client.DownloadString(_url));
+                Client.Proxy = null;
+
+                return GetResponseInternal(_httpMethod == "GET" ? Client.DownloadString(Url) : Client.UploadString(Url, _httpMethod, _body));
             }
             catch (Exception e)
             {
@@ -40,20 +50,20 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
 
         public override void InitializeAdapter()
         {
-            initialized = true;
+            _initialized = true;
         }
 
         public override bool Initialized
         {
-            get { return initialized; }
+            get { return _initialized; }
         }
 
         protected override void Dispose(bool disposing)
         {
             try
             {
-                if(client != null)
-                    client.Dispose();
+                if(Client != null)
+                    Client.Dispose();
             }
             finally 
             {
