@@ -144,13 +144,13 @@ namespace Hitta.Surveillance.Monitor.MonitorPanels
             {
                 while (true)
                 {
-                    Thread.Sleep(1000 * dataCollectorAdapter.Interval);
-
                     if (!dataCollectorAdapter.Initialized)
                         dataCollectorAdapter.InitializeAdapter();
 
                     int measuredValue = dataCollectorAdapter.MeasuredValue;
                     SetValue(measuredValue);
+
+                    Thread.Sleep(1000 * dataCollectorAdapter.Interval);
                 }
             }
             catch (ThreadAbortException)
