@@ -89,12 +89,23 @@ namespace Hitta.Surveillance.Monitor.Controls
             
             if(showValue)
             {
-                var fontSize = TextUtils.GetFontSize(e.Graphics, value.ToString(), Font, new SizeF(maxFillSpace.Height, maxFillSpace.Width));
-                var textHeight = e.Graphics.MeasureString(value.ToString(), new Font(Font.FontFamily, fontSize)).Height;
+                var vertical = DisplayRectangle.Height > DisplayRectangle.Width;
+                var size = vertical
+                    ? new SizeF(maxFillSpace.Height, maxFillSpace.Width)
+                    : new SizeF(maxFillSpace.Width, maxFillSpace.Height);
+                var fontSize = TextUtils.GetFontSize(e.Graphics, value.ToString(), Font, size);
+                var stringSize = e.Graphics.MeasureString(value.ToString(), new Font(Font.FontFamily, fontSize));
+
+                var xOffset = vertical ? (DisplayRectangle.Width/2f) - (stringSize.Height/2): (DisplayRectangle.Width / 2f) - (stringSize.Width / 2);
+                var yOffset = vertical ? maxFillSpace.Height : (maxFillSpace.Height / 2) - (stringSize.Height / 2);
 
                 var matrix = new Matrix();
-                matrix.RotateAt(-90f, new PointF(0, 0));
-                matrix.Translate((DisplayRectangle.Width / 2f) - (textHeight / 2), maxFillSpace.Height, MatrixOrder.Append);
+                if (vertical)
+                {
+                    matrix.RotateAt(-90f, new PointF(0, 0));
+                }
+
+                matrix.Translate(xOffset,yOffset, MatrixOrder.Append);
 
                 e.Graphics.Transform = matrix;
 
