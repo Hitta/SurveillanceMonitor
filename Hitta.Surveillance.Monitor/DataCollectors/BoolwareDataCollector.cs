@@ -6,7 +6,7 @@ namespace Hitta.Surveillance.Monitor.DataCollectors
 {
     public class BoolwareDataCollector : DataCollectorAdapterBase
     {
-        private const string XML_REQUESTS = "XML request:";
+        private const string XML_REQUESTS = "XML/JSON request:";
 
         protected bool initialized;
         protected Client client;
