@@ -142,6 +142,7 @@
     <Compile Include="DataCollectors\BasicAuthHttpDataCollector.cs" />
     <Compile Include="DataCollectors\BoolwareTimestampDataCollector.cs" />
     <Compile Include="DataCollectors\HttpBodyCompareDataCollector.cs" />
+    <Compile Include="DataCollectors\ElasticsearchDataCollector.cs" />
     <Compile Include="DataCollectors\HttpResponseCodeDataCollector.cs" />
     <Compile Include="DataCollectors\HttpNginxDataCollector.cs" />
     <Compile Include="DataCollectors\HttpJsonDataCollector.cs" />

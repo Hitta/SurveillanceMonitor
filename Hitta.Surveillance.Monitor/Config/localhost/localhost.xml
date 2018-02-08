@@ -1,215 +1,263 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects xmlns="http://www.springframework.net">
 
+  
+  
   <object id="localhost-panel" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
     <constructor-arg name="layoutEngine">
       <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
     </constructor-arg>
     <constructor-arg name="childControls">
       <list element-type="System.Windows.Forms.UserControl">
-        <ref object="localhost-processor"/>
-        <ref object="localhost-network"/>
-        <!--ref object="refiningCompanyPanel"/-->
-        <!--ref object="boolware-timestamp"/-->
+        <ref object="search01.aws"/>
       </list>
     </constructor-arg>
-    <constructor-arg name="title" value="Localhost WMI"/>
-    <constructor-arg name="headerHeight" value="100"/>
-    <property name="MinimumSize" value="0,200"/>
+    <property name="MinimumSize" value="200,700"/>
   </object>
 
-  <object id="boolware-timestamp" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+  <object id="aws-search-searchnodes" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
     <constructor-arg name="childControls">
       <list element-type="System.Windows.Forms.UserControl">
-        <ref object="boolware-request"/>
-        <ref object="boolware-loadbalance"/>
-        <ref object="bool-sth-index-cmp-time"/>
+        <ref object="search04.aws"/>
+        <ref object="search05.aws"/>
       </list>
     </constructor-arg>
-    <property name="MinimumSize" value="0,70"/>
+    <property name="MinimumSize" value="200,1300"/>
   </object>
 
-  <object id="bool-sth-index-cmp-time" type="Hitta.Surveillance.Monitor.MonitorPanels.BucketMonitorPanel">
-    <constructor-arg name="dataCollectorAdapter" ref="bool-sth-index-cmp-time_collector"/>
-    <constructor-arg name="healthLevel" ref="boolware-index-time_level"/>
-    <constructor-arg name="bucket" ref="boolware-time-bucket" />
-    <property name="MinimumSize" value="0,70"/>
+  <object id="searchCpuHealthLevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
+    <constructor-arg name="controlValue" value="-1"/>
+    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
+    <property name="Successor" ref="searchCpuWarningHealthLevel" />
   </object>
-  <object id="bool-sth-index-cmp-time_collector" type="Hitta.Surveillance.Monitor.DataCollectors.BoolwareTimestampDataCollector">
-    <constructor-arg name="fieldName" value="LOCATIONNAME"/>
-    <constructor-arg name="indexName" value="VBOOLWARECOMPANIES"/>
-    <constructor-arg name="dsnName" value="SEARCH"/>
-    <constructor-arg name="hostName" value="172.17.90.26"/>
-    <!--constructor-arg name="hostName" value="10.70.250.11"/-->
+  <object id="searchCpuWarningHealthLevel" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
+    <constructor-arg name="controlValue" value="80"/>
+    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+  </object>
+
+  <object id="search01.aws" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="aws-search01-cpu"/>
+        <!--<ref object="aws-search01-mem"/>-->
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="search01"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="200,1000"/>
+  </object>
+
+  <object id="aws-search01-cpu" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search01-cpu-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
+  </object>
+  <object id="aws-search01-cpu-collector" type="Hitta.Surveillance.Monitor.DataCollectors.ElasticsearchDataCollector">
+    <constructor-arg name="url" value="http://search01.hitta.internal:9200/_nodes/search01/stats/os"/>
+    <constructor-arg name="path" value="nodes/*/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
     <constructor-arg name="interval" value="1"/>
-    <constructor-arg name="displayName" value="index age"/>
+    <constructor-arg name="displayName" value="% cpu"/>
     <constructor-arg name="description">
       <null/>
     </constructor-arg>
   </object>
 
-  <object id="boolware-time-bucket" type="Hitta.Surveillance.Monitor.Controls.Bucket" singleton="false">
-    <constructor-arg name="showValue" value="true"/>
-    <constructor-arg name="maxValue" value="100"/>
-  </object>
-  <object id="boolware-index-time_level" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1" />
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection" />
-    <property name="Successor" ref="boolware-index-time_warning_level" />
-  </object>
-  <object id="boolware-index-time_warning_level" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
-    <constructor-arg name="controlValue" value="10" />
-    <constructor-arg name="colorCoder" ref="colorCoderWarning" />
-  </object>
-
-  <object id="boolware-loadbalance" type="Hitta.Surveillance.Monitor.MonitorPanels.ColorSignalPanel">
-    <constructor-arg name="dataCollectorAdapter" ref="boolwareloadDataCollector"/>
-    <constructor-arg name="healthLevel" ref="refiningHealthLevel0"/>
-  </object>
-  <object id="boolwareloadDataCollector" type="Hitta.Surveillance.Monitor.DataCollectors.BoolwareLoadBalanceCollector">
-    <constructor-arg name="displayName" value="bw"/>
-    <constructor-arg name="description" value=""/>
-    <constructor-arg name="interval" value="10"/>
-    <constructor-arg name="hostname" value="172.17.90.26"/>
-  </object>
-  <object id="boolwareloadHealthLevel0" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
-    <property name="Successor" ref="boolwareloadHealthLevel1"/>
-  </object>
-  <object id="boolwareloadHealthLevel1" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderRefiningOk"/>
-  </object>
-
-  <object id="boolware-request" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
-    <constructor-arg name="dataCollectorAdapter" ref="boolware-request-datacollector"/>
-    <constructor-arg name="healthLevel" ref="boolware-request-healthlevel"/>
-    <constructor-arg name="yScale" value="100"/>
+  <object id="aws-search01-mem" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search01-mem-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
     <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
   </object>
-  <object id="boolware-request-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.BoolwareDataCollector">
-    <constructor-arg name="hostname" value="172.17.90.26"/>
+  <object id="aws-search01-mem-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search01.hitta.internal:9200/_nodes/search01/stats/os"/>
+    <constructor-arg name="path" value="nodes/ACzv-eLuR8OGKGaVfzrZBQ/os/mem/used_percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
     <constructor-arg name="interval" value="1"/>
-    <constructor-arg name="displayName" value="Boolware requests"/>
-    <constructor-arg name="description" value="request of boolware"/>
-  </object>
-  <object id="boolware-request-healthlevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
-    <property name="Successor" ref="boolware-request-healthlevel-warn"/>
-  </object>
-  <object id="boolware-request-healthlevel-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
-    <constructor-arg name="controlValue" value="80"/>
-    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
+    <constructor-arg name="displayName" value="% mem"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
   </object>
 
-  <object id="refiningCompanyPanel" type="Hitta.Surveillance.Monitor.MonitorPanels.ColorSignalPanel">
-    <constructor-arg name="dataCollectorAdapter" ref="refiningCompanyDataCollector"/>
-    <constructor-arg name="healthLevel" ref="refiningHealthLevel0"/>
-  </object>
-  <object id="refiningCompanyDataCollector" type="Hitta.Surveillance.Monitor.DataCollectors.BasicAuthHttpDataCollector">
-    <constructor-arg name="displayName" value="Stage ftg, priv o mob"/>
-    <constructor-arg name="description" value=""/>
-    <constructor-arg name="interval" value="10"/>
-    <constructor-arg name="url" value="http://refdbtest.hitta.local:8182/metrics/metrics/?path=//schedule[@id='107']/status/text()"/>
-    <constructor-arg name="user" value="reading"/>
-    <constructor-arg name="pwd" value="reading"/>
-  </object>
-  <object id="refiningHealthLevel0" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
-    <property name="Successor" ref="refiningHealthLevel1"/>
-  </object>
-  <object id="refiningHealthLevel1" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderRefiningOk"/>
-    <property name="Successor" ref="refiningHealthLevel2"/>
-  </object>
-  <object id="refiningHealthLevel2" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="2"/>
-    <constructor-arg name="colorCoder" ref="colorCoderRefiningWarning"/>
-    <property name="Successor" ref="refiningHealthLevel3"/>
-  </object>
-  <object id="refiningHealthLevel3" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="3"/>
-    <constructor-arg name="colorCoder" ref="colorCoderRefiningError"/>
-    <property name="Successor" ref="refiningHealthLevel4"/>
-  </object>
-  <object id="refiningHealthLevel4" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="4"/>
-    <constructor-arg name="colorCoder" ref="colorCoderRefiningRunning"/>
-  </object>
-  <object id="colorCoderRefiningOk" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
-    <constructor-arg name="foreColor1" value="0,190,0"/>
-    <constructor-arg name="foreColor2" value="0,0,0"/>
-    <constructor-arg name="backColor" value="0,0,0"/>
-  </object>
-  <object id="colorCoderRefiningWarning" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
-    <constructor-arg name="foreColor1" value="255,215,0"/>
-    <constructor-arg name="foreColor2" value="0,0,0"/>
-    <constructor-arg name="backColor" value="0,0,0"/>
-  </object>
-  <object id="colorCoderRefiningError" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
-    <constructor-arg name="foreColor1" value="255,0,0"/>
-    <constructor-arg name="foreColor2" value="0,0,0"/>
-    <constructor-arg name="backColor" value="0,0,0"/>
-  </object>
-  <object id="colorCoderRefiningRunning" type="Hitta.Surveillance.Monitor.ColorCoders.ColorCoderCustom">
-    <constructor-arg name="foreColor1" value="100,100,255"/>
-    <constructor-arg name="foreColor2" value="0,0,0"/>
-    <constructor-arg name="backColor" value="0,0,0"/>
+  <object id="search02.aws" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="aws-search02-cpu"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="search02"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="200,1000"/>
   </object>
 
-  <object id="localhost-processor" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
-    <constructor-arg name="dataCollectorAdapter" ref="localhost-processor-datacollector"/>
-    <constructor-arg name="healthLevel" ref="localhost-processor-healthlevel"/>
-    <constructor-arg name="yScale" value="100"/>
+  <object id="aws-search02-cpu" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search02-cpu-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
     <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
   </object>
-  <object id="localhost-processor-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.PerformanceCounterDataCollector">
-    <constructor-arg name="categoryName" value="Processor Information"/>
-    <constructor-arg name="counterName" value="% Processor Time"/>
-    <constructor-arg name="instanceName" value="_Total"/>
-    <constructor-arg name="machineName" value="."/>
+  <object id="aws-search02-cpu-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search02.hitta.internal:9200/_nodes/search02/stats/os"/>
+    <constructor-arg name="path" value="nodes/zRp7H9m6Se6dcisucumiHA/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
     <constructor-arg name="interval" value="1"/>
-    <constructor-arg name="displayName" value="% Processor Time"/>
-    <constructor-arg name="description" value=""/>
+    <constructor-arg name="displayName" value="cpu"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
   </object>
 
-  <object id="localhost-network" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
-    <constructor-arg name="dataCollectorAdapter" ref="localhost-network-datacollector"/>
-    <constructor-arg name="healthLevel" ref="localhost-network-healthlevel"/>
-    <constructor-arg name="yScale" value="100"/>
-    <property name="Margin" value="3,0,3,0"/>
+  <object id="search03.aws" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="aws-search03-cpu"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="search03"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="200,1000"/>
   </object>
-  <object id="localhost-network-datacollector" type="Hitta.Surveillance.Monitor.DataCollectors.PerformanceCounterDataCollector">
-    <constructor-arg name="categoryName" value="Per Processor Network Interface Card Activity"/>
-    <constructor-arg name="counterName" value="Sent Packets/sec"/>
-    <constructor-arg name="instanceName" value="_Total"/>
-    <constructor-arg name="machineName" value="."/>
+
+  <object id="aws-search03-cpu" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search03-cpu-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
+  </object>
+  <object id="aws-search03-cpu-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search03.hitta.internal:9200/_nodes/search03/stats/os"/>
+    <constructor-arg name="path" value="nodes/1Jh0JXYERp6fa40xMT2__Q/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
     <constructor-arg name="interval" value="1"/>
-    <constructor-arg name="displayName" value="Network packets/sec"/>
-    <constructor-arg name="description" value=""/>
+    <constructor-arg name="displayName" value="cpu"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="search04.aws" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="aws-search04-cpu"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="search04"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="200,1000"/>
+  </object>
+
+  <object id="aws-search04-cpu" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search04-cpu-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
+  </object>
+  <object id="aws-search04-cpu-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search04.hitta.internal:9200/_nodes/search04/stats/os"/>
+    <constructor-arg name="path" value="nodes/cWFaRC7XTsqx0-JB5-5_Kg/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="cpu"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="search05.aws" type="Hitta.Surveillance.Monitor.MonitorPanels.CompositPanel">
+    <constructor-arg name="layoutEngine">
+      <object type="Hitta.Surveillance.Monitor.LayoutEngines.VerticalFlowLayoutEngine"/>
+    </constructor-arg>
+    <constructor-arg name="childControls">
+      <list element-type="System.Windows.Forms.UserControl">
+        <ref object="aws-search05-cpu"/>
+      </list>
+    </constructor-arg>
+    <constructor-arg name="title" value="search05"/>
+    <constructor-arg name="headerHeight" value="100"/>
+    <property name="MinimumSize" value="200,1000"/>
+  </object>
+
+  <object id="aws-search05-cpu" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search05-cpu-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
+  </object>
+  <object id="aws-search05-cpu-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search05.hitta.internal:9200/_nodes/search05/stats/os"/>
+    <constructor-arg name="path" value="nodes/G4vbKZLhR6OvjmePUr-6kw/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="false"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="cpu"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
+  </object>
+
+  <object id="aws-search05-query" type="Hitta.Surveillance.Monitor.MonitorPanels.GraphMonitorPanelCompact">
+    <constructor-arg name="graph" ref="wwwRequestGraph"/>
+    <constructor-arg name="dataCollectorAdapter" ref="aws-search05-query-collector"/>
+    <constructor-arg name="healthLevel" ref="searchCpuHealthLevel"/>
+    <property name="Margin" value="3,0,3,0"/>
+    <property name="MinimumSize" value="0,75"/>
+  </object>
+  <object id="aws-search05-query-collector" type="Hitta.Surveillance.Monitor.DataCollectors.HttpJsonDataCollector">
+    <constructor-arg name="url" value="http://search05.hitta.internal:9200/_nodes/search05/stats/os"/>
+    <constructor-arg name="path" value="nodes/G4vbKZLhR6OvjmePUr-6kw/os/cpu/percent"/>
+    <constructor-arg name="calculateFromLastMeasure" value="true"/>
+    <constructor-arg name="interval" value="1"/>
+    <constructor-arg name="displayName" value="queries/s"/>
+    <constructor-arg name="description">
+      <null/>
+    </constructor-arg>
   </object>
   
-  <object id="localhost-processor-healthlevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
-    <property name="Successor" ref="localhost-processor-healthlevel-warn"/>
-  </object>
-  <object id="localhost-processor-healthlevel-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
-    <constructor-arg name="controlValue" value="80"/>
-    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
-  </object>
-
-  <object id="localhost-network-healthlevel" type="Hitta.Surveillance.Monitor.HealthLevels.EqualsHealthLevel">
-    <constructor-arg name="controlValue" value="-1"/>
-    <constructor-arg name="colorCoder" ref="colorCoderNoConnection"/>
-    <property name="Successor" ref="localhost-network-healthlevel-warn"/>
-  </object>
-  <object id="localhost-network-healthlevel-warn" type="Hitta.Surveillance.Monitor.HealthLevels.HigherThanHealthLevel">
-    <constructor-arg name="controlValue" value="100"/>
-    <constructor-arg name="colorCoder" ref="colorCoderWarning"/>
-  </object>
+  
+  
+  	<object id="wwwRequestGraph" type="Hitta.Surveillance.Monitor.HistoryGraph" singleton="false">
+		<constructor-arg name="showValue" value="true"/>
+		<constructor-arg name="updateInterval">
+			<object type="System.TimeSpan">
+				<constructor-arg name="days" value="0"/>
+				<constructor-arg name="hours" value="0"/>
+				<constructor-arg name="minutes" value="0"/>
+				<constructor-arg name="seconds" value="1"/>
+			</object>
+		</constructor-arg>
+		<constructor-arg name="chunkSize" value="60"/>
+		<constructor-arg name="chunkUpdateInterval">
+			<object type="System.TimeSpan">
+				<constructor-arg name="days" value="0"/>
+				<constructor-arg name="hours" value="0"/>
+				<constructor-arg name="minutes" value="1"/>
+				<constructor-arg name="seconds" value="0"/>
+			</object>
+		</constructor-arg>
+		<property name="YScale" value="200"/>
+	</object>  
+  
+  
 </objects>
